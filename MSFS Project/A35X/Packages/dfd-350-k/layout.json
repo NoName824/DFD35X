@@ -274,6 +274,71 @@
       "path": "SimObjects/Airplanes/DFD350-K/TEXTURE/thumbnail_small.JPG",
       "size": 13339,
       "date": 132611845644084822
+    },
+    {
+      "path": "SimObjects/Airplanes/DFD350-K/TEXTURE.VIR/350ENGINE_COWLING_BASECOLOR.PNG.DDS",
+      "size": 11184952,
+      "date": 132614656651072231
+    },
+    {
+      "path": "SimObjects/Airplanes/DFD350-K/TEXTURE.VIR/350ENGINE_COWLING_BASECOLOR.PNG.DDS.json",
+      "size": 102,
+      "date": 132614656650882736
+    },
+    {
+      "path": "SimObjects/Airplanes/DFD350-K/TEXTURE.VIR/DECALS.PNG.DDS",
+      "size": 89478640,
+      "date": 132614656693830488
+    },
+    {
+      "path": "SimObjects/Airplanes/DFD350-K/TEXTURE.VIR/DECALS.PNG.DDS.json",
+      "size": 119,
+      "date": 132614656692853097
+    },
+    {
+      "path": "SimObjects/Airplanes/DFD350-K/TEXTURE.VIR/ENGINE_NACELLES.PNG.DDS",
+      "size": 11184952,
+      "date": 132614656716644518
+    },
+    {
+      "path": "SimObjects/Airplanes/DFD350-K/TEXTURE.VIR/ENGINE_NACELLES.PNG.DDS.json",
+      "size": 102,
+      "date": 132614656716604624
+    },
+    {
+      "path": "SimObjects/Airplanes/DFD350-K/TEXTURE.VIR/FUSELAGE_NEW_UV.PNG.DDS",
+      "size": 11184952,
+      "date": 132614656729018035
+    },
+    {
+      "path": "SimObjects/Airplanes/DFD350-K/TEXTURE.VIR/FUSELAGE_NEW_UV.PNG.DDS.json",
+      "size": 102,
+      "date": 132614656728968168
+    },
+    {
+      "path": "SimObjects/Airplanes/DFD350-K/TEXTURE.VIR/TAIL.PNG.DDS",
+      "size": 11184952,
+      "date": 132614656704976378
+    },
+    {
+      "path": "SimObjects/Airplanes/DFD350-K/TEXTURE.VIR/TAIL.PNG.DDS.json",
+      "size": 102,
+      "date": 132614656704926509
+    },
+    {
+      "path": "SimObjects/Airplanes/DFD350-K/TEXTURE.VIR/texture.CFG",
+      "size": 38,
+      "date": 132514038120000000
+    },
+    {
+      "path": "SimObjects/Airplanes/DFD350-K/TEXTURE.VIR/thumbnail.JPG",
+      "size": 51559,
+      "date": 132611845506596296
+    },
+    {
+      "path": "SimObjects/Airplanes/DFD350-K/TEXTURE.VIR/thumbnail_small.JPG",
+      "size": 13339,
+      "date": 132611845644084822
     }
   ]
 }
