@@ -44,9 +44,8 @@
                 24,
                 25,
                 26,
-                27,
-                35,
-                36
+                34,
+                35
             ]
         }
     ],
@@ -353,35 +352,14 @@
         {
             "mesh" : 24,
             "name" : "ENGINE_FAN_BLADES_LEFT",
-            "rotation" : [
-                0,
-                0,
-                0.6427804827690125,
-                0.766050398349762
-            ],
             "translation" : [
-                10.4119234085083,
-                3.3440072536468506,
-                9.368260383605957
+                10.411924362182617,
+                3.344007730484009,
+                9.36825942993164
             ]
         },
         {
             "mesh" : 25,
-            "name" : "ENGINE_SPINNER_LEFT",
-            "rotation" : [
-                0,
-                0,
-                0.6427863240242004,
-                0.7660455107688904
-            ],
-            "translation" : [
-                10.41067123413086,
-                3.3438382148742676,
-                9.428268432617188
-            ]
-        },
-        {
-            "mesh" : 26,
             "name" : "APU_EXHAUST_LIGHT",
             "rotation" : [
                 0.7071067690849304,
@@ -396,7 +374,7 @@
             ]
         },
         {
-            "mesh" : 27,
+            "mesh" : 26,
             "name" : "FLAP_TRACK_FAIRINGS",
             "rotation" : [
                 0,
@@ -411,15 +389,15 @@
             ]
         },
         {
-            "mesh" : 28,
+            "mesh" : 27,
             "name" : "NOSE_LANDING_GEAR"
         },
         {
-            "mesh" : 29,
+            "mesh" : 28,
             "name" : "NOSE_LANDING_GEAR.001"
         },
         {
-            "mesh" : 30,
+            "mesh" : 29,
             "name" : "NOSE_LANDING_GEAR.002",
             "translation" : [
                 0.00025937671307474375,
@@ -428,7 +406,7 @@
             ]
         },
         {
-            "mesh" : 31,
+            "mesh" : 30,
             "name" : "NOSE_MISC_PART_ONE",
             "translation" : [
                 0,
@@ -437,7 +415,7 @@
             ]
         },
         {
-            "mesh" : 32,
+            "mesh" : 31,
             "name" : "NOSE_MISC_PART_TWO",
             "translation" : [
                 0,
@@ -446,7 +424,7 @@
             ]
         },
         {
-            "mesh" : 33,
+            "mesh" : 32,
             "name" : "NOSE_WHEEL_LEFT",
             "translation" : [
                 0.43173372745513916,
@@ -455,7 +433,7 @@
             ]
         },
         {
-            "mesh" : 34,
+            "mesh" : 33,
             "name" : "NOSE_WHEEL_RIGHT",
             "translation" : [
                 -0.43173331022262573,
@@ -465,13 +443,13 @@
         },
         {
             "children" : [
+                27,
                 28,
                 29,
                 30,
                 31,
                 32,
-                33,
-                34
+                33
             ],
             "name" : "Empty.001",
             "translation" : [
@@ -481,7 +459,7 @@
             ]
         },
         {
-            "mesh" : 35,
+            "mesh" : 34,
             "name" : "Plane",
             "translation" : [
                 1.7202590703964233,
@@ -534,45 +512,7 @@
                 {
                     "sampler" : 0,
                     "target" : {
-                        "node" : 24,
-                        "path" : "rotation"
-                    }
-                }
-            ],
-            "name" : "ENGINE_FAN_BLADES_LEFTAction",
-            "samplers" : [
-                {
-                    "input" : 254,
-                    "interpolation" : "LINEAR",
-                    "output" : 257
-                }
-            ]
-        },
-        {
-            "channels" : [
-                {
-                    "sampler" : 0,
-                    "target" : {
-                        "node" : 25,
-                        "path" : "rotation"
-                    }
-                }
-            ],
-            "name" : "ENGINE_SPINNER_LEFTAction",
-            "samplers" : [
-                {
-                    "input" : 254,
-                    "interpolation" : "LINEAR",
-                    "output" : 258
-                }
-            ]
-        },
-        {
-            "channels" : [
-                {
-                    "sampler" : 0,
-                    "target" : {
-                        "node" : 35,
+                        "node" : 34,
                         "path" : "rotation"
                     }
                 }
@@ -582,7 +522,7 @@
                 {
                     "input" : 254,
                     "interpolation" : "LINEAR",
-                    "output" : 259
+                    "output" : 257
                 }
             ]
         }
@@ -919,7 +859,6 @@
         },
         {
             "alphaMode" : "BLEND",
-            "doubleSided" : true,
             "emissiveFactor" : [
                 0,
                 0,
@@ -931,13 +870,13 @@
             "name" : "Windows",
             "pbrMetallicRoughness" : {
                 "baseColorFactor" : [
-                    0.18083953857421875,
-                    0.23153963685035706,
-                    0.3185398578643799,
-                    0.05000000074505806
+                    1,
+                    1,
+                    1,
+                    0.009999999776482582
                 ],
                 "metallicFactor" : 0,
-                "roughnessFactor" : 0
+                "roughnessFactor" : 0.5
             }
         },
         {
@@ -1011,7 +950,6 @@
             }
         },
         {
-            "doubleSided" : true,
             "emissiveFactor" : [
                 0,
                 0,
@@ -1020,9 +958,9 @@
             "name" : "FanBlades",
             "pbrMetallicRoughness" : {
                 "baseColorFactor" : [
-                    0.2140352874994278,
-                    0.2140352874994278,
-                    0.2140352874994278,
+                    0.15743444859981537,
+                    0.15743444859981537,
+                    0.15743444859981537,
                     1
                 ],
                 "metallicFactor" : 0.800000011920929,
@@ -1060,7 +998,7 @@
                     "texCoord" : 0
                 },
                 "metallicFactor" : 0.30000001192092896,
-                "roughnessFactor" : 0.5
+                "roughnessFactor" : 0.4000000059604645
             }
         },
         {
@@ -1624,12 +1562,7 @@
                     },
                     "indices" : 197,
                     "material" : 22
-                }
-            ]
-        },
-        {
-            "name" : "Plane.003",
-            "primitives" : [
+                },
                 {
                     "attributes" : {
                         "POSITION" : 198,
@@ -3485,14 +3418,14 @@
             "componentType" : 5126,
             "count" : 157,
             "max" : [
-                0.4318351745605469,
-                0.4318351447582245,
-                0.9781143069267273
+                0.43058300018310547,
+                0.4316661059856415,
+                1.0381224155426025
             ],
             "min" : [
-                -0.4318351745605469,
-                -0.43183520436286926,
-                -0.5424174070358276
+                -0.4330873489379883,
+                -0.43200424313545227,
+                -0.48240935802459717
             ],
             "type" : "VEC3"
         },
@@ -3911,12 +3844,12 @@
             "componentType" : 5126,
             "count" : 100,
             "max" : [
-                -0.30827343463897705,
+                -0.31327342987060547,
                 0.4231244921684265,
                 0.12866079807281494
             ],
             "min" : [
-                -3.164348840713501,
+                -3.159348964691162,
                 -0.42312443256378174,
                 -0.12866082787513733
             ],
@@ -3972,18 +3905,6 @@
         },
         {
             "bufferView" : 257,
-            "componentType" : 5126,
-            "count" : 101,
-            "type" : "VEC4"
-        },
-        {
-            "bufferView" : 258,
-            "componentType" : 5126,
-            "count" : 101,
-            "type" : "VEC4"
-        },
-        {
-            "bufferView" : 259,
             "componentType" : 5126,
             "count" : 101,
             "type" : "VEC4"
@@ -5279,21 +5200,11 @@
             "buffer" : 0,
             "byteLength" : 1616,
             "byteOffset" : 26428872
-        },
-        {
-            "buffer" : 0,
-            "byteLength" : 1616,
-            "byteOffset" : 26430488
-        },
-        {
-            "buffer" : 0,
-            "byteLength" : 1616,
-            "byteOffset" : 26432104
         }
     ],
     "buffers" : [
         {
-            "byteLength" : 26433720,
+            "byteLength" : 26430488,
             "uri" : "DFD350_Exterior.bin"
         }
     ]
