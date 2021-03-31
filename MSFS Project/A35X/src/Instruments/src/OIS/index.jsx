@@ -1,4 +1,4 @@
-import {React, useState} from 'react';
+import {React, useState, useEffect} from 'react';
 import ReactDOM from 'react-dom';
 
 import OIS_MAIN_PAGE from './Pages/Main Page/main-page'
@@ -15,28 +15,12 @@ import {
 } from '../util.js';
 
 function OIS_DISPLAY() {
-    //Create enum simvar to define what page on the OIS to render.
-    setSimVar('L:OIS_SELECTED_SCREEN', 0, 'enum');
-
     /*KEY FOR SELECTED SCREEN VALUES
         0 = OIS_MAIN_PAGE
+        1 = OIS_TEST
     */
-
-    let [oisState, setOisState] = useState(0);
     
-    useUpdate(dt => {
-        setOisState(getSimVar('L:OIS_SELECTED_SCREEN', 'enum'));
-    });  
-    
-    if (oisState === 0) {
-        return <OIS_MAIN_PAGE />;
-    }
-    else if (oisState === 1) {
-        return <OIS_TEST />;
-    }
-    else {
-        return <div><h1>null render</h1></div>;
-    }
+        return <OIS_MAIN_PAGE />
 }
 
 ReactDOM.render(<OIS_DISPLAY />, renderTarget);

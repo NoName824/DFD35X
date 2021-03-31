@@ -5,12 +5,12 @@ import {
     setSimVar
 } from '../../../util.js'
 
-const OIS_MAIN_PAGE = () => {
+const OIS_MAIN_PAGE = (props) => {
     return(
         <div>
             <div className="main_page">
                 <div>
-                    <button className="btn company-com" onClick={setSimVar('L:OIS_SELECTED_SCREEN', 1, 'enum')}>COMPANY COM</button>
+                    <button className="btn company-com">COMPANY COM</button>
                     <button className="btn efb">EFB</button>
                     <button className="btn clear">CLEAR</button>
                     <button className="btn msg">30 MSG</button>

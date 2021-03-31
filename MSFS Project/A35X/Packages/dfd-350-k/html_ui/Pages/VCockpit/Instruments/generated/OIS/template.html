@@ -8630,13 +8630,14 @@
 	  }
 	});
 
-	const OIS_MAIN_PAGE = () => {
+	const OIS_MAIN_PAGE = props => {
 	  return /*#__PURE__*/jsxRuntime.jsx("div", {
 	    children: /*#__PURE__*/jsxRuntime.jsxs("div", {
 	      className: "main_page",
 	      children: [/*#__PURE__*/jsxRuntime.jsxs("div", {
 	        children: [/*#__PURE__*/jsxRuntime.jsx("button", {
 	          className: "btn company-com",
+	          onClick: () => setSimVar('L:OIS_SELECTED_SCREEN', 1, 'number'),
 	          children: "COMPANY COM"
 	        }), /*#__PURE__*/jsxRuntime.jsx("button", {
 	          className: "btn efb",
@@ -8713,14 +8714,17 @@
 
 	function OIS_DISPLAY() {
 	  //Create enum simvar to define what page on the OIS to render.
-	  setSimVar('L:OIS_SELECTED_SCREEN', 0, 'enum');
+	  react.useEffect(() => {
+	    setSimVar('L:OIS_SELECTED_SCREEN', 0, 'number');
+	  }, []);
 	  /*KEY FOR SELECTED SCREEN VALUES
 	      0 = OIS_MAIN_PAGE
 	  */
 
 	  let [oisState, setOisState] = react.useState(0);
 	  useUpdate(dt => {
-	    setOisState(getSimVar('L:OIS_SELECTED_SCREEN', 'enum'));
+	    setOisState(getSimVar('L:OIS_SELECTED_SCREEN', 'number'));
+	    console.log(oisState);
 	  });
 
 	  if (oisState === 0) {
@@ -8730,7 +8734,7 @@
 	  } else {
 	    return /*#__PURE__*/jsxRuntime.jsx("div", {
 	      children: /*#__PURE__*/jsxRuntime.jsx("h1", {
-	        children: "bruh"
+	        children: "null render"
 	      })
 	    });
 	  }

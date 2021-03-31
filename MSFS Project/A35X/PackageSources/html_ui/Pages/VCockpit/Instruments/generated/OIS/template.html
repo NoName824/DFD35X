@@ -8529,50 +8529,10 @@
 	 */
 	const renderTarget = document.getElementById('A35X_REACT_MOUNT');
 	const customElement = renderTarget.parentElement; // @param {() => void} handler
-
-	function useUpdate(handler) {
-	  // Logic based on https://usehooks.com/useEventListener/
-	  const savedHandler = react.useRef(handler);
-	  react.useEffect(() => {
-	    savedHandler.current = handler;
-	  }, [handler]);
-	  react.useEffect(() => {
-	    const wrappedHandler = event => {
-	      savedHandler.current(event.detail);
-	    };
-
-	    customElement.addEventListener('update', wrappedHandler);
-	    return () => {
-	      customElement.removeEventListener('update', wrappedHandler);
-	    };
-	  });
-	}
-	const SIMVAR_TYPES = {
-	  '__proto__': null,
-	  'GPS POSITION LAT': 'degrees latitude',
-	  'L:APU_GEN_ONLINE': 'Bool',
-	  'EXTERNAL POWER AVAILABLE:1': 'Bool',
-	  'EXTERNAL POWER ON': 'Bool',
-	  'L:A32NX_COLD_AND_DARK_SPAWN': 'Bool',
-	  'TOTAL AIR TEMPERATURE': 'Celsius',
-	  'AMBIENT TEMPERATURE': 'Celsius',
-	  'L:A320_Neo_ADIRS_STATE': 'Enum'
-	};
 	const SIMVAR_CACHE = new Map();
 	customElement.addEventListener('update', () => {
 	  SIMVAR_CACHE.clear();
 	});
-	function getSimVar(name, type) {
-	  if (!SIMVAR_CACHE.has(name)) {
-	    SIMVAR_CACHE.set(name, SimVar.GetSimVarValue(name, type || SIMVAR_TYPES[name]));
-	  }
-
-	  return SIMVAR_CACHE.get(name);
-	}
-	function setSimVar(name, value, type = SIMVAR_TYPES[name]) {
-	  SIMVAR_CACHE.delete(name);
-	  return SimVar.SetSimVarValue(name, type, value);
-	}
 
 	var reactJsxRuntime_production_min = createCommonjsModule(function (module, exports) {
 
@@ -8630,7 +8590,7 @@
 	  }
 	});
 
-	const OIS_MAIN_PAGE = () => {
+	const OIS_MAIN_PAGE = props => {
 	  return /*#__PURE__*/jsxRuntime.jsx("div", {
 	    children: /*#__PURE__*/jsxRuntime.jsxs("div", {
 	      className: "main_page",
@@ -8703,37 +8663,12 @@
 	  });
 	};
 
-	const OIS_TEST = () => {
-	  return /*#__PURE__*/jsxRuntime.jsx("div", {
-	    children: /*#__PURE__*/jsxRuntime.jsx("h1", {
-	      children: "Another page for button because yes"
-	    })
-	  });
-	};
-
 	function OIS_DISPLAY() {
-	  //Create enum simvar to define what page on the OIS to render.
-	  setSimVar('L:OIS_SELECTED_SCREEN', 0, 'enum');
 	  /*KEY FOR SELECTED SCREEN VALUES
 	      0 = OIS_MAIN_PAGE
+	      1 = OIS_TEST
 	  */
-
-	  let [oisState, setOisState] = react.useState(0);
-	  useUpdate(dt => {
-	    setOisState(getSimVar('L:OIS_SELECTED_SCREEN', 'enum'));
-	  });
-
-	  if (oisState === 0) {
-	    return /*#__PURE__*/jsxRuntime.jsx(OIS_MAIN_PAGE, {});
-	  } else if (oisState === 1) {
-	    return /*#__PURE__*/jsxRuntime.jsx(OIS_TEST, {});
-	  } else {
-	    return /*#__PURE__*/jsxRuntime.jsx("div", {
-	      children: /*#__PURE__*/jsxRuntime.jsx("h1", {
-	        children: "bruh"
-	      })
-	    });
-	  }
+	  return /*#__PURE__*/jsxRuntime.jsx(OIS_MAIN_PAGE, {});
 	}
 
 	reactDom.render( /*#__PURE__*/jsxRuntime.jsx(OIS_DISPLAY, {}), renderTarget);
