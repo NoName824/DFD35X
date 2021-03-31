@@ -8510,6 +8510,70 @@
 	  }
 	});
 
+	/*
+	 * A32NX
+	 * Copyright (C) 2020-2021 FlyByWire Simulations and its contributors
+	 *
+	 * This program is free software: you can redistribute it and/or modify
+	 * it under the terms of the GNU General Public License as published by
+	 * the Free Software Foundation, either version 3 of the License, or
+	 * (at your option) any later version.
+	 *
+	 * This program is distributed in the hope that it will be useful,
+	 * but WITHOUT ANY WARRANTY; without even the implied warranty of
+	 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	 * GNU General Public License for more details.
+	 *
+	 * You should have received a copy of the GNU General Public License
+	 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+	 */
+	const renderTarget = document.getElementById('A35X_REACT_MOUNT');
+	const customElement = renderTarget.parentElement; // @param {() => void} handler
+
+	function useUpdate(handler) {
+	  // Logic based on https://usehooks.com/useEventListener/
+	  const savedHandler = react.useRef(handler);
+	  react.useEffect(() => {
+	    savedHandler.current = handler;
+	  }, [handler]);
+	  react.useEffect(() => {
+	    const wrappedHandler = event => {
+	      savedHandler.current(event.detail);
+	    };
+
+	    customElement.addEventListener('update', wrappedHandler);
+	    return () => {
+	      customElement.removeEventListener('update', wrappedHandler);
+	    };
+	  });
+	}
+	const SIMVAR_TYPES = {
+	  '__proto__': null,
+	  'GPS POSITION LAT': 'degrees latitude',
+	  'L:APU_GEN_ONLINE': 'Bool',
+	  'EXTERNAL POWER AVAILABLE:1': 'Bool',
+	  'EXTERNAL POWER ON': 'Bool',
+	  'L:A32NX_COLD_AND_DARK_SPAWN': 'Bool',
+	  'TOTAL AIR TEMPERATURE': 'Celsius',
+	  'AMBIENT TEMPERATURE': 'Celsius',
+	  'L:A320_Neo_ADIRS_STATE': 'Enum'
+	};
+	const SIMVAR_CACHE = new Map();
+	customElement.addEventListener('update', () => {
+	  SIMVAR_CACHE.clear();
+	});
+	function getSimVar(name, type) {
+	  if (!SIMVAR_CACHE.has(name)) {
+	    SIMVAR_CACHE.set(name, SimVar.GetSimVarValue(name, type || SIMVAR_TYPES[name]));
+	  }
+
+	  return SIMVAR_CACHE.get(name);
+	}
+	function setSimVar(name, value, type = SIMVAR_TYPES[name]) {
+	  SIMVAR_CACHE.delete(name);
+	  return SimVar.SetSimVarValue(name, type, value);
+	}
+
 	var reactJsxRuntime_production_min = createCommonjsModule(function (module, exports) {
 
 	  var g = 60103;
@@ -8566,7 +8630,7 @@
 	  }
 	});
 
-	const OIS = () => {
+	const OIS_MAIN_PAGE = () => {
 	  return /*#__PURE__*/jsxRuntime.jsx("div", {
 	    children: /*#__PURE__*/jsxRuntime.jsxs("div", {
 	      className: "main_page",
@@ -8639,31 +8703,40 @@
 	  });
 	};
 
-	/*
-	 * A32NX
-	 * Copyright (C) 2020-2021 FlyByWire Simulations and its contributors
-	 *
-	 * This program is free software: you can redistribute it and/or modify
-	 * it under the terms of the GNU General Public License as published by
-	 * the Free Software Foundation, either version 3 of the License, or
-	 * (at your option) any later version.
-	 *
-	 * This program is distributed in the hope that it will be useful,
-	 * but WITHOUT ANY WARRANTY; without even the implied warranty of
-	 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	 * GNU General Public License for more details.
-	 *
-	 * You should have received a copy of the GNU General Public License
-	 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
-	 */
-	const renderTarget = document.getElementById('A35X_REACT_MOUNT');
-	const customElement = renderTarget.parentElement; // @param {() => void} handler
-	const SIMVAR_CACHE = new Map();
-	customElement.addEventListener('update', () => {
-	  SIMVAR_CACHE.clear();
-	});
+	const OIS_TEST = () => {
+	  return /*#__PURE__*/jsxRuntime.jsx("div", {
+	    children: /*#__PURE__*/jsxRuntime.jsx("h1", {
+	      children: "Another page for button because yes"
+	    })
+	  });
+	};
 
-	reactDom.render( /*#__PURE__*/jsxRuntime.jsx(OIS, {}), renderTarget);
+	function OIS_DISPLAY() {
+	  //Create enum simvar to define what page on the OIS to render.
+	  setSimVar('L:OIS_SELECTED_SCREEN', 0, 'enum');
+	  /*KEY FOR SELECTED SCREEN VALUES
+	      0 = OIS_MAIN_PAGE
+	  */
+
+	  let [oisState, setOisState] = react.useState(0);
+	  useUpdate(dt => {
+	    setOisState(getSimVar('L:OIS_SELECTED_SCREEN', 'enum'));
+	  });
+
+	  if (oisState === 0) {
+	    return /*#__PURE__*/jsxRuntime.jsx(OIS_MAIN_PAGE, {});
+	  } else if (oisState === 1) {
+	    return /*#__PURE__*/jsxRuntime.jsx(OIS_TEST, {});
+	  } else {
+	    return /*#__PURE__*/jsxRuntime.jsx("div", {
+	      children: /*#__PURE__*/jsxRuntime.jsx("h1", {
+	        children: "bruh"
+	      })
+	    });
+	  }
+	}
+
+	reactDom.render( /*#__PURE__*/jsxRuntime.jsx(OIS_DISPLAY, {}), renderTarget);
 
 }());
 

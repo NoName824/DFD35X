@@ -1,7 +1,8 @@
 import {React, useState} from 'react';
 import ReactDOM from 'react-dom';
 
-import OIS_MAIN_PAGE from './main-page'
+import OIS_MAIN_PAGE from './Pages/Main Page/main-page'
+import OIS_TEST from './test'
 
 import './index-style.scss';
 
@@ -21,13 +22,21 @@ function OIS_DISPLAY() {
         0 = OIS_MAIN_PAGE
     */
 
+    let [oisState, setOisState] = useState(0);
+    
     useUpdate(dt => {
-        const selectedScreen = getSimVar('L:OIS_SELECTED_SCREEN', 'enum');
-
-        if (selectedScreen === 0) {
-            return <OIS_MAIN_PAGE />;
-        }
-    });
+        setOisState(getSimVar('L:OIS_SELECTED_SCREEN', 'enum'));
+    });  
+    
+    if (oisState === 0) {
+        return <OIS_MAIN_PAGE />;
+    }
+    else if (oisState === 1) {
+        return <OIS_TEST />;
+    }
+    else {
+        return <div><h1>null render</h1></div>;
+    }
 }
 
 ReactDOM.render(<OIS_DISPLAY />, renderTarget);
