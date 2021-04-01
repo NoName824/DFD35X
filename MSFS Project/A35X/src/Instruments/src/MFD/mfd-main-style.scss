@@ -1,6 +1,39 @@
-#text {
+body {
+    padding: none;
+    margin: none;
+    background-color: black;
+}
+
+.mfd-body {
     position: absolute;
-    z-index: 1;
-    text-align: center;
-    font-size: 200px;
+    background-color: black;
+    padding: 0;
+    margin: 0;
+    top: 0;
+    height: 100%;
+    width: 49.5%;
+}
+
+#left {
+    left: 0;
+}
+
+#right {
+    left: 50.5%;
+}
+
+#mfd-splitter {
+    background-color: #071924;
+    position: absolute;
+    left: 49.5%;
+    top: 2%;
+    width: 0.9%;
+    height: 96%;
+    border: 1px solid white;
+    border-color: rgb(171, 187, 214) rgb(171, 187, 214) rgb(140, 166, 204) rgb(229, 239, 255);
+}
+
+button {
+    width: 20%;
+    height: 20%;
 }

@@ -1,0 +1,49 @@
+.fmc-dropdown-body
+{  
+    position: absolute;
+    background-color: #394a52;
+    height: 3.5%;
+    left: 10%;
+    width: 20%;
+    .drop-top
+    {
+        position: absolute;
+        top: 12.5%;
+        left: 2.5%;
+        height: 85%;
+        width: 95%;
+        background-color: #757575;
+        .drop-top-inner
+        {
+            position: absolute;
+            width: 75%;
+            left: 2.5%;
+            top: 10%;
+            height: 80%;
+            background-color: black;
+        }
+    }
+    .drop-lower-body
+    {        
+        position: absolute;
+        width: 100%;
+        top: 100%;
+        background-color: #394a52;
+        .drop-lower-inner
+        {
+            position: absolute;
+            left: 2.5%;
+            height: 95%;
+            width: 95%;
+            background-color: #404040;
+            .drop-item
+            {
+                position: absolute;
+                left: 5%;
+                height: 95%;
+                width: 90%;
+                vertical-align: middle;
+            }
+        }
+    }
+}
