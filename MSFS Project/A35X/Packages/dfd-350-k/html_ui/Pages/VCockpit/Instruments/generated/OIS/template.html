@@ -8529,50 +8529,12 @@
 	 */
 	const renderTarget = document.getElementById('A35X_REACT_MOUNT');
 	const customElement = renderTarget.parentElement; // @param {() => void} handler
-
-	function useUpdate(handler) {
-	  // Logic based on https://usehooks.com/useEventListener/
-	  const savedHandler = react.useRef(handler);
-	  react.useEffect(() => {
-	    savedHandler.current = handler;
-	  }, [handler]);
-	  react.useEffect(() => {
-	    const wrappedHandler = event => {
-	      savedHandler.current(event.detail);
-	    };
-
-	    customElement.addEventListener('update', wrappedHandler);
-	    return () => {
-	      customElement.removeEventListener('update', wrappedHandler);
-	    };
-	  });
-	}
-	const SIMVAR_TYPES = {
-	  '__proto__': null,
-	  'GPS POSITION LAT': 'degrees latitude',
-	  'L:APU_GEN_ONLINE': 'Bool',
-	  'EXTERNAL POWER AVAILABLE:1': 'Bool',
-	  'EXTERNAL POWER ON': 'Bool',
-	  'L:A32NX_COLD_AND_DARK_SPAWN': 'Bool',
-	  'TOTAL AIR TEMPERATURE': 'Celsius',
-	  'AMBIENT TEMPERATURE': 'Celsius',
-	  'L:A320_Neo_ADIRS_STATE': 'Enum'
-	};
 	const SIMVAR_CACHE = new Map();
 	customElement.addEventListener('update', () => {
 	  SIMVAR_CACHE.clear();
 	});
-	function getSimVar(name, type) {
-	  if (!SIMVAR_CACHE.has(name)) {
-	    SIMVAR_CACHE.set(name, SimVar.GetSimVarValue(name, type || SIMVAR_TYPES[name]));
-	  }
 
-	  return SIMVAR_CACHE.get(name);
-	}
-	function setSimVar(name, value, type = SIMVAR_TYPES[name]) {
-	  SIMVAR_CACHE.delete(name);
-	  return SimVar.SetSimVarValue(name, type, value);
-	}
+	const oisContext = /*#__PURE__*/react.createContext({});
 
 	var reactJsxRuntime_production_min = createCommonjsModule(function (module, exports) {
 
@@ -8631,13 +8593,14 @@
 	});
 
 	const OIS_MAIN_PAGE = props => {
+	  let context = react.useContext(oisContext);
 	  return /*#__PURE__*/jsxRuntime.jsx("div", {
 	    children: /*#__PURE__*/jsxRuntime.jsxs("div", {
 	      className: "main_page",
 	      children: [/*#__PURE__*/jsxRuntime.jsxs("div", {
 	        children: [/*#__PURE__*/jsxRuntime.jsx("button", {
+	          onClick: () => context.setOisPage(1),
 	          className: "btn company-com",
-	          onClick: () => setSimVar('L:OIS_SELECTED_SCREEN', 1, 'number'),
 	          children: "COMPANY COM"
 	        }), /*#__PURE__*/jsxRuntime.jsx("button", {
 	          className: "btn efb",
@@ -8713,30 +8676,37 @@
 	};
 
 	function OIS_DISPLAY() {
-	  //Create enum simvar to define what page on the OIS to render.
-	  react.useEffect(() => {
-	    setSimVar('L:OIS_SELECTED_SCREEN', 0, 'number');
-	  }, []);
-	  /*KEY FOR SELECTED SCREEN VALUES
-	      0 = OIS_MAIN_PAGE
-	  */
+	  let [oisPage, setOisPage] = react.useState(0);
+	  let context = {
+	    oisPage: oisPage,
+	    setOisPage: setOisPage
+	  };
 
-	  let [oisState, setOisState] = react.useState(0);
-	  useUpdate(dt => {
-	    setOisState(getSimVar('L:OIS_SELECTED_SCREEN', 'number'));
-	    console.log(oisState);
-	  });
+	  switch (oisPage) {
+	    case 0:
+	      {
+	        return /*#__PURE__*/jsxRuntime.jsx(oisContext.Provider, {
+	          value: context,
+	          children: /*#__PURE__*/jsxRuntime.jsx(OIS_MAIN_PAGE, {})
+	        });
+	      }
 
-	  if (oisState === 0) {
-	    return /*#__PURE__*/jsxRuntime.jsx(OIS_MAIN_PAGE, {});
-	  } else if (oisState === 1) {
-	    return /*#__PURE__*/jsxRuntime.jsx(OIS_TEST, {});
-	  } else {
-	    return /*#__PURE__*/jsxRuntime.jsx("div", {
-	      children: /*#__PURE__*/jsxRuntime.jsx("h1", {
-	        children: "null render"
-	      })
-	    });
+	    case 1:
+	      {
+	        return /*#__PURE__*/jsxRuntime.jsx(oisContext.Provider, {
+	          value: context,
+	          children: /*#__PURE__*/jsxRuntime.jsx(OIS_TEST, {})
+	        });
+	      }
+
+	    default:
+	      {
+	        return /*#__PURE__*/jsxRuntime.jsx("div", {
+	          children: /*#__PURE__*/jsxRuntime.jsx("h1", {
+	            children: "INOP"
+	          })
+	        });
+	      }
 	  }
 	}
 

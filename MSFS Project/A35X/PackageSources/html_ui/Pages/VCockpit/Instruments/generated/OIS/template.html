@@ -8534,6 +8534,8 @@
 	  SIMVAR_CACHE.clear();
 	});
 
+	const oisContext = /*#__PURE__*/react.createContext({});
+
 	var reactJsxRuntime_production_min = createCommonjsModule(function (module, exports) {
 
 	  var g = 60103;
@@ -8591,11 +8593,13 @@
 	});
 
 	const OIS_MAIN_PAGE = props => {
+	  let context = react.useContext(oisContext);
 	  return /*#__PURE__*/jsxRuntime.jsx("div", {
 	    children: /*#__PURE__*/jsxRuntime.jsxs("div", {
 	      className: "main_page",
 	      children: [/*#__PURE__*/jsxRuntime.jsxs("div", {
 	        children: [/*#__PURE__*/jsxRuntime.jsx("button", {
+	          onClick: () => context.setOisPage(1),
 	          className: "btn company-com",
 	          children: "COMPANY COM"
 	        }), /*#__PURE__*/jsxRuntime.jsx("button", {
@@ -8663,12 +8667,47 @@
 	  });
 	};
 
+	const OIS_TEST = () => {
+	  return /*#__PURE__*/jsxRuntime.jsx("div", {
+	    children: /*#__PURE__*/jsxRuntime.jsx("h1", {
+	      children: "Another page for button because yes"
+	    })
+	  });
+	};
+
 	function OIS_DISPLAY() {
-	  /*KEY FOR SELECTED SCREEN VALUES
-	      0 = OIS_MAIN_PAGE
-	      1 = OIS_TEST
-	  */
-	  return /*#__PURE__*/jsxRuntime.jsx(OIS_MAIN_PAGE, {});
+	  let [oisPage, setOisPage] = react.useState(0);
+	  let context = {
+	    oisPage: oisPage,
+	    setOisPage: setOisPage
+	  };
+
+	  switch (oisPage) {
+	    case 0:
+	      {
+	        return /*#__PURE__*/jsxRuntime.jsx(oisContext.Provider, {
+	          value: context,
+	          children: /*#__PURE__*/jsxRuntime.jsx(OIS_MAIN_PAGE, {})
+	        });
+	      }
+
+	    case 1:
+	      {
+	        return /*#__PURE__*/jsxRuntime.jsx(oisContext.Provider, {
+	          value: context,
+	          children: /*#__PURE__*/jsxRuntime.jsx(OIS_TEST, {})
+	        });
+	      }
+
+	    default:
+	      {
+	        return /*#__PURE__*/jsxRuntime.jsx("div", {
+	          children: /*#__PURE__*/jsxRuntime.jsx("h1", {
+	            children: "INOP"
+	          })
+	        });
+	      }
+	  }
 	}
 
 	reactDom.render( /*#__PURE__*/jsxRuntime.jsx(OIS_DISPLAY, {}), renderTarget);

@@ -1,16 +1,18 @@
-import {React, useState} from 'react';
+import {React, useContext} from 'react';
 import './main-page-style.scss';
 import './main-page-buttons-style.scss';
 import {
     setSimVar
 } from '../../../util.js'
+import oisContext from '../../oisContext';
 
 const OIS_MAIN_PAGE = (props) => {
+    let context = useContext(oisContext);
     return(
         <div>
             <div className="main_page">
                 <div>
-                    <button className="btn company-com">COMPANY COM</button>
+                    <button onClick={() => context.setOisPage(1)} className="btn company-com">COMPANY COM</button>
                     <button className="btn efb">EFB</button>
                     <button className="btn clear">CLEAR</button>
                     <button className="btn msg">30 MSG</button>

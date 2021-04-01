@@ -1,10 +1,11 @@
-import {React, useState, useEffect} from 'react';
+import {React, useState} from 'react';
 import ReactDOM from 'react-dom';
 
 import OIS_MAIN_PAGE from './Pages/Main Page/main-page'
 import OIS_TEST from './test'
-
+import oisContext from "./oisContext"
 import './index-style.scss';
+import { renderTarget } from '../util';
 
 import {
     renderTarget,
@@ -15,12 +16,37 @@ import {
 } from '../util.js';
 
 function OIS_DISPLAY() {
-    /*KEY FOR SELECTED SCREEN VALUES
-        0 = OIS_MAIN_PAGE
-        1 = OIS_TEST
-    */
+    let [oisPage, setOisPage] = useState(0)
     
-        return <OIS_MAIN_PAGE />
+    let context = {
+        oisPage: oisPage,
+        setOisPage: setOisPage
+    }
+    
+    switch (oisPage) {
+        case 0 : {
+            return(
+               <oisContext.Provider value={context}>
+                    <OIS_MAIN_PAGE />
+               </oisContext.Provider>
+            ) 
+        }
+        case 1 : {
+            return(
+               <oisContext.Provider value={context}>
+                    <OIS_TEST />
+               </oisContext.Provider>
+            ) 
+        }
+        default: {
+            return(
+                <div>
+                    <h1>INOP</h1>
+                </div>
+            )
+        }
+    }
+        
 }
 
 ReactDOM.render(<OIS_DISPLAY />, renderTarget);
