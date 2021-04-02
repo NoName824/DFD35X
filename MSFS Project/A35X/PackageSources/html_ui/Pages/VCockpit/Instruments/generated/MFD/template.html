@@ -9,8 +9,12 @@
         // We embed it into this file, even though it is useless, because this file can
         // be hot-reloaded, but `template.js` cannot.
         /* eslint-disable */
-        (function () {
+        (function (exports) {
 	'use strict';
+
+	function getDefaultExportFromCjs (x) {
+		return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
+	}
 
 	function createCommonjsModule(fn, basedir, module) {
 		return module = {
@@ -25,6 +29,27 @@
 	function commonjsRequire () {
 		throw new Error('Dynamic requires are not currently supported by @rollup/plugin-commonjs');
 	}
+
+	var defineProperty = createCommonjsModule(function (module) {
+	  function _defineProperty(obj, key, value) {
+	    if (key in obj) {
+	      Object.defineProperty(obj, key, {
+	        value: value,
+	        enumerable: true,
+	        configurable: true,
+	        writable: true
+	      });
+	    } else {
+	      obj[key] = value;
+	    }
+
+	    return obj;
+	  }
+
+	  module.exports = _defineProperty;
+	  module.exports["default"] = module.exports, module.exports.__esModule = true;
+	});
+	var _defineProperty = /*@__PURE__*/getDefaultExportFromCjs(defineProperty);
 
 	/*
 	object-assign
@@ -8510,30 +8535,6 @@
 	  }
 	});
 
-	/*
-	 * A32NX
-	 * Copyright (C) 2020-2021 FlyByWire Simulations and its contributors
-	 *
-	 * This program is free software: you can redistribute it and/or modify
-	 * it under the terms of the GNU General Public License as published by
-	 * the Free Software Foundation, either version 3 of the License, or
-	 * (at your option) any later version.
-	 *
-	 * This program is distributed in the hope that it will be useful,
-	 * but WITHOUT ANY WARRANTY; without even the implied warranty of
-	 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	 * GNU General Public License for more details.
-	 *
-	 * You should have received a copy of the GNU General Public License
-	 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
-	 */
-	const renderTarget = document.getElementById('A35X_REACT_MOUNT');
-	const customElement = renderTarget.parentElement; // @param {() => void} handler
-	const SIMVAR_CACHE = new Map();
-	customElement.addEventListener('update', () => {
-	  SIMVAR_CACHE.clear();
-	});
-
 	var reactJsxRuntime_production_min = createCommonjsModule(function (module, exports) {
 
 	  var g = 60103;
@@ -8590,27 +8591,464 @@
 	  }
 	});
 
+	let DropdownType;
+
+	(function (DropdownType) {
+	  DropdownType[DropdownType["system_select"] = 0] = "system_select";
+	  DropdownType[DropdownType["general_bar"] = 1] = "general_bar";
+	})(DropdownType || (DropdownType = {}));
+
+	class Dropdown extends react.Component {
+	  constructor(props) {
+	    super(props);
+
+	    _defineProperty(this, "props", void 0);
+
+	    _defineProperty(this, "state", void 0);
+
+	    this.state = {
+	      open: false,
+	      selected: props.items[0].toString()
+	    };
+	    this.selectItem = this.selectItem.bind(this);
+	    this.toggleOpen = this.toggleOpen.bind(this);
+	  }
+
+	  toggleOpen() {
+	    this.setState({
+	      open: !this.state.open
+	    });
+	  }
+
+	  selectItem(index) {
+	    console.log("Item Index is " + index);
+	    this.props.onSelect(index);
+	    this.setState({
+	      selected: this.props.items[index].toString()
+	    });
+	    this.toggleOpen();
+	  }
+
+	  render() {
+	    if (!this.state.open) {
+	      switch (this.props.type) {
+	        case DropdownType.system_select:
+	          return /*#__PURE__*/jsxRuntime.jsx("div", {
+	            style: {
+	              left: this.props.offsetX + "%",
+	              top: this.props.offseY + "%"
+	            },
+	            className: "bck-blue-grey fmc-dropdown-body",
+	            children: /*#__PURE__*/jsxRuntime.jsx("div", {
+	              onClick: () => this.toggleOpen(),
+	              className: "bck-grey drop-top",
+	              children: /*#__PURE__*/jsxRuntime.jsxs("div", {
+	                className: "bck-black drop-top-inner",
+	                children: [" ", this.state.selected]
+	              })
+	            })
+	          });
+
+	        case DropdownType.general_bar:
+	          return /*#__PURE__*/jsxRuntime.jsx("div", {
+	            style: {
+	              left: this.props.offsetX + "%",
+	              top: this.props.offseY + "%",
+	              height: "5%",
+	              width: "25%"
+	            },
+	            className: "bck-white fmc-dropdown-body",
+	            children: /*#__PURE__*/jsxRuntime.jsx("div", {
+	              onClick: () => this.toggleOpen(),
+	              className: "bck-grey drop-top",
+	              children: this.state.selected
+	            })
+	          });
+	      }
+	    } else {
+	      var item_elements = [];
+	      this.props.items.map((item, index) => item_elements.push( /*#__PURE__*/jsxRuntime.jsx("span", {
+	        style: {
+	          top: index * (100 / this.props.items.length) + "%"
+	        },
+	        onClick: () => this.selectItem(index),
+	        className: "drop-item",
+	        children: item
+	      })));
+
+	      switch (this.props.type) {
+	        case DropdownType.system_select:
+	          return /*#__PURE__*/jsxRuntime.jsxs("div", {
+	            style: {
+	              left: this.props.offsetX + "%",
+	              top: this.props.offseY + "%"
+	            },
+	            className: "bck-blue-grey fmc-dropdown-body",
+	            children: [/*#__PURE__*/jsxRuntime.jsx("div", {
+	              onClick: () => this.toggleOpen(),
+	              className: "bck-grey drop-top",
+	              children: /*#__PURE__*/jsxRuntime.jsxs("div", {
+	                className: "bck-black drop-top-inner",
+	                children: [" ", this.state.selected]
+	              })
+	            }), /*#__PURE__*/jsxRuntime.jsx("div", {
+	              style: {
+	                height: this.props.items.length * 80 + "%"
+	              },
+	              className: "bck-blue-grey\r drop-lower-body",
+	              children: /*#__PURE__*/jsxRuntime.jsx("div", {
+	                className: "bck-dark-grey drop-lower-inner",
+	                children: item_elements
+	              })
+	            })]
+	          });
+
+	        case DropdownType.general_bar:
+	          return /*#__PURE__*/jsxRuntime.jsxs("div", {
+	            style: {
+	              left: this.props.offsetX + "%",
+	              top: this.props.offseY + "%",
+	              height: "5%",
+	              width: "25%"
+	            },
+	            className: "bck-white fmc-dropdown-body",
+	            children: [/*#__PURE__*/jsxRuntime.jsx("div", {
+	              onClick: () => this.toggleOpen(),
+	              className: "bck-grey drop-top",
+	              children: this.state.selected
+	            }), /*#__PURE__*/jsxRuntime.jsx("div", {
+	              style: {
+	                height: this.props.items.length * 80 + "%"
+	              },
+	              className: "bck-white\r drop-lower-body",
+	              children: /*#__PURE__*/jsxRuntime.jsx("div", {
+	                className: "bck-dark-grey drop-lower-inner",
+	                children: item_elements
+	              })
+	            })]
+	          });
+	      }
+	    }
+	  }
+
+	}
+
+	class FMS_Sys extends react.Component {
+	  constructor(props) {
+	    super(props);
+
+	    _defineProperty(this, "state", void 0);
+
+	    this.state = {
+	      currentPage: "ACTIVE/INIT"
+	    };
+	  }
+
+	  render() {
+	    return /*#__PURE__*/jsxRuntime.jsxs("div", {
+	      className: "SystemWindow",
+	      children: [/*#__PURE__*/jsxRuntime.jsx(Dropdown, {
+	        type: DropdownType.general_bar,
+	        items: ["ACTIVE"]
+	      }), /*#__PURE__*/jsxRuntime.jsx(Dropdown, {
+	        offsetX: 25,
+	        type: DropdownType.general_bar,
+	        items: ["POSITION"]
+	      }), /*#__PURE__*/jsxRuntime.jsx(Dropdown, {
+	        offsetX: 50,
+	        type: DropdownType.general_bar,
+	        items: ["SEC INDEX"]
+	      }), /*#__PURE__*/jsxRuntime.jsx(Dropdown, {
+	        offsetX: 75,
+	        type: DropdownType.general_bar,
+	        items: ["DATA"]
+	      }), /*#__PURE__*/jsxRuntime.jsx("div", {
+	        id: "fms-header",
+	        className: "bck-white",
+	        children: this.state.currentPage
+	      })]
+	    });
+	  }
+
+	}
+
+	class ATC_COM_Sys extends react.Component {
+	  render() {
+	    return /*#__PURE__*/jsxRuntime.jsx("div", {
+	      className: "SystemWindow",
+	      children: "ATC Com System"
+	    });
+	  }
+
+	}
+
+	class SURV_Sys extends react.Component {
+	  render() {
+	    return /*#__PURE__*/jsxRuntime.jsx("div", {
+	      className: "SystemWindow",
+	      children: "Survey System"
+	    });
+	  }
+
+	}
+
+	class Checklist_Sys extends react.Component {
+	  render() {
+	    return /*#__PURE__*/jsxRuntime.jsx("div", {
+	      className: "SystemWindow",
+	      children: "Checklist System"
+	    });
+	  }
+
+	}
+
+	class FCU_BKUP_Sys extends react.Component {
+	  render() {
+	    return /*#__PURE__*/jsxRuntime.jsx("div", {
+	      className: "SystemWindow",
+	      children: "FCU Backup System"
+	    });
+	  }
+
+	}
+
+	/*
+	 * A32NX
+	 * Copyright (C) 2020-2021 FlyByWire Simulations and its contributors
+	 *
+	 * This program is free software: you can redistribute it and/or modify
+	 * it under the terms of the GNU General Public License as published by
+	 * the Free Software Foundation, either version 3 of the License, or
+	 * (at your option) any later version.
+	 *
+	 * This program is distributed in the hope that it will be useful,
+	 * but WITHOUT ANY WARRANTY; without even the implied warranty of
+	 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	 * GNU General Public License for more details.
+	 *
+	 * You should have received a copy of the GNU General Public License
+	 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+	 */
+	const renderTarget = document.getElementById('A35X_REACT_MOUNT');
+	const customElement = renderTarget.parentElement; // @param {() => void} handler
+	const SIMVAR_TYPES = {
+	  '__proto__': null,
+	  'GPS POSITION LAT': 'degrees latitude',
+	  'L:APU_GEN_ONLINE': 'Bool',
+	  'EXTERNAL POWER AVAILABLE:1': 'Bool',
+	  'EXTERNAL POWER ON': 'Bool',
+	  'L:A32NX_COLD_AND_DARK_SPAWN': 'Bool',
+	  'TOTAL AIR TEMPERATURE': 'Celsius',
+	  'AMBIENT TEMPERATURE': 'Celsius',
+	  'L:A320_Neo_ADIRS_STATE': 'Enum'
+	};
+	const SIMVAR_CACHE = new Map();
+	customElement.addEventListener('update', () => {
+	  SIMVAR_CACHE.clear();
+	});
+	function getSimVar(name, type) {
+	  if (!SIMVAR_CACHE.has(name)) {
+	    SIMVAR_CACHE.set(name, SimVar.GetSimVarValue(name, type || SIMVAR_TYPES[name]));
+	  }
+
+	  return SIMVAR_CACHE.get(name);
+	}
+
+	class MFD_BODY extends react.Component {
+	  constructor(props) {
+	    super(props);
+
+	    _defineProperty(this, "props", void 0);
+
+	    _defineProperty(this, "state", void 0);
+
+	    this.state = {
+	      page: 0
+	    };
+	  }
+
+	  currentPage() {
+	    switch (this.state.page) {
+	      case 0:
+	        return /*#__PURE__*/jsxRuntime.jsx(FMS_Sys, {});
+
+	      case 1:
+	        return /*#__PURE__*/jsxRuntime.jsx(ATC_COM_Sys, {});
+
+	      case 2:
+	        return /*#__PURE__*/jsxRuntime.jsx(SURV_Sys, {});
+
+	      case 3:
+	        return /*#__PURE__*/jsxRuntime.jsx(Checklist_Sys, {});
+
+	      case 4:
+	        return /*#__PURE__*/jsxRuntime.jsx(FCU_BKUP_Sys, {});
+	    }
+	  }
+
+	  render() {
+	    return /*#__PURE__*/jsxRuntime.jsxs("div", {
+	      id: this.props.side,
+	      className: "mfd-body",
+	      children: [/*#__PURE__*/jsxRuntime.jsx(Dropdown, {
+	        type: DropdownType.system_select,
+	        onSelect: index => this.setState({
+	          page: index
+	        }),
+	        items: ["FMS" + (this.props.side === "left" ? "1" : "2"), "ATC COM", "SURV", "C/L MENU", "FCU BKUP"]
+	      }), /*#__PURE__*/jsxRuntime.jsx("span", {
+	        id: "flight-num",
+	        children: getSimVar("ATC FLIGHT NUMBER", "string")
+	      }), this.currentPage()]
+	    });
+	  }
+
+	}
+
 	const MFD_SCREEN = () => {
-	  return /*#__PURE__*/jsxRuntime.jsx("div", {
-	    children: /*#__PURE__*/jsxRuntime.jsx("h1", {
-	      id: "text",
-	      children: "MFD"
-	    })
+	  return /*#__PURE__*/jsxRuntime.jsxs("body", {
+	    children: [/*#__PURE__*/jsxRuntime.jsx(MFD_BODY, {
+	      side: "left"
+	    }), /*#__PURE__*/jsxRuntime.jsx("div", {
+	      id: "mfd-splitter"
+	    }), /*#__PURE__*/jsxRuntime.jsx(MFD_BODY, {
+	      side: "right"
+	    })]
 	  });
 	};
 
 	reactDom.render( /*#__PURE__*/jsxRuntime.jsx(MFD_SCREEN, {}), renderTarget);
 
-}());
+	exports.MFD_BODY = MFD_BODY;
+
+	Object.defineProperty(exports, '__esModule', { value: true });
+
+	return exports;
+
+}({}));
 
     </script>
     <style id="A35X_BUNDLED_STYLE">
         /* same deal as above */
-        #text {
+        body {
+  padding: none;
+  margin: none;
+  background-color: black;
+}
+
+/*Colours*/
+
+.bck-blue-grey {
+  background-color: #394a52;
+}
+
+.bck-grey {
+  background-color: #757575;
+}
+
+.bck-dark-grey {
+  background-color: #404040;
+}
+
+.bck-black {
+  background-color: black;
+}
+
+.bck-white {
+  background-color: white;
+}
+
+.mfd-body {
   position: absolute;
+  background-color: black;
+  padding: 0;
+  margin: 0;
+  top: 0;
+  height: 100%;
+  width: 49.5%;
+}
+
+#left {
+  left: 0;
+}
+
+#right {
+  left: 50.5%;
+}
+
+#mfd-splitter {
+  background-color: #071924;
+  position: absolute;
+  left: 49.5%;
+  top: 2%;
+  width: 0.9%;
+  height: 96%;
+  border: 1px solid white;
+  border-color: #abbbd6 #abbbd6 #8ca6cc #e5efff;
+}
+
+#flight-num {
+  position: absolute;
+  right: 1%;
+  top: 0.5%;
+  font-size: 200%;
+  color: white;
+}
+
+.SystemWindow {
+  position: absolute;
+  top: 3.5%;
+  width: 100%;
+  height: 80%;
+}
+.fmc-dropdown-body {
+  position: absolute;
+  height: 3.5%;
+  width: 20%;
+}
+
+.fmc-dropdown-body .drop-top {
+  position: absolute;
+  top: 12.5%;
+  left: 2.5%;
+  height: 85%;
+  width: 95%;
+}
+
+.fmc-dropdown-body .drop-top .drop-top-inner {
+  position: absolute;
+  width: 75%;
+  left: 2.5%;
+  top: 10%;
+  height: 80%;
+}
+
+.fmc-dropdown-body .drop-lower-body {
   z-index: 1;
-  text-align: center;
-  font-size: 200px;
+  position: absolute;
+  width: 100%;
+  top: 100%;
+}
+
+.fmc-dropdown-body .drop-lower-body .drop-lower-inner {
+  position: absolute;
+  left: 2.5%;
+  height: 95%;
+  width: 95%;
+}
+
+.fmc-dropdown-body .drop-lower-body .drop-lower-inner .drop-item {
+  position: absolute;
+  left: 5%;
+  height: 95%;
+  width: 90%;
+}
+#fms-header {
+  position: absolute;
+  width: 100%;
+  top: 5%;
+  height: 2.5%;
+  color: black;
 }
     </style>
 </script>
