@@ -2,7 +2,7 @@ import ReactDOM from 'react-dom'
 import React from 'react'
 import './mfd-main-style.scss'
 import { Dropdown, DropdownType } from './Components/dropdown'
-import { FMS_Sys } from './Systems/FMS_Sys'
+import { FMS_Sys } from './Systems/FMS/FMS_Sys'
 import { ATC_COM_Sys } from './Systems/ATC_COM_Sys'
 import { SURV_Sys } from './Systems/SURV_Sys'
 import { Checklist_Sys } from './Systems/Checklist_Sys'
@@ -63,7 +63,7 @@ const MFD_SCREEN = () => {
     return(
         <body>
             <MFD_BODY side="left"/>
-            <div id="mfd-splitter"></div>
+            <div className="bck-grey" id="mfd-splitter"></div>
             <MFD_BODY side="right"/>
         </body>
     )

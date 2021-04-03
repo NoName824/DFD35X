@@ -10,13 +10,20 @@ body {
     font-family: "ECAM Regular" !important;
 }
 /*Colours*/
+
+$grey:  #757575;
+$outline-black: rgb(10,10,10);
 .bck-blue-grey
 {
     background-color: #394a52;
 }
 .bck-grey
 {
-    background-color: #757575;
+    background-color: $grey;
+}
+.frnt-grey
+{
+    color: $grey;
 }
 .bck-dark-grey
 {
@@ -31,13 +38,28 @@ body {
     background-color: white;
 }
 
-
+/* Components */
+button{
+    box-sizing: border-box;
+    position: absolute;
+    color: white;
+    background-color: $grey;
+    border: 2px solid;
+    border-radius: 5px;
+    border-color: white black black white;
+    font-family: "ECAM Regular";
+}
+button:hover
+{
+    border-color: cyan;
+}
+/*Windows*/
 .mfd-body {
     position: absolute;
     background-color: black;
-    padding: 0;
+    padding: 0.5% 1.5% 0.5% 1.5%;
+    box-sizing: border-box;
     margin: 0;
-    top: 0;
     height: 100%;
     width: 49.5%;
 }
@@ -51,19 +73,18 @@ body {
 }
 
 #mfd-splitter {
-    background-color: #071924;
     position: absolute;
-    left: 49.5%;
+    box-sizing: border-box;
+    left: 49%;
     top: 2%;
-    width: 0.9%;
+    width: 2%;
     height: 96%;
     border: 1px solid white;
-    border-color: rgb(171, 187, 214) rgb(171, 187, 214) rgb(140, 166, 204) rgb(229, 239, 255);
 }
 #flight-num
 {
-    position:absolute;
-    right: 1%;
+    position: absolute;
+    right: 5%;
     top: 0.5%;
     font-size: 200%;
     color: white;
@@ -71,7 +92,7 @@ body {
 .SystemWindow
 {
     position: absolute;
-    top: 3.5%;
-    width: 100%;
+    top: 4.25%;
+    width: 92%;
     height: 80%;
 }

@@ -1,6 +1,6 @@
 import { List } from 'postcss/lib/list';
 import React from 'react';
-import './select.scss'
+import './dropdown.scss'
 
 export enum DropdownType
 {
@@ -53,19 +53,17 @@ export class Dropdown extends React.Component
             {
                 case(DropdownType.system_select):
                     return(
-                        <div style={{left: (this.props.offsetX + "%"), top: (this.props.offseY + "%")}} className="bck-blue-grey fmc-dropdown-body">
-                            <div onClick={() => this.toggleOpen()} className="bck-grey drop-top">
+                            <button style={{left: (this.props.offsetX + "%"), top: (this.props.offseY + "%")}} onClick={() => this.toggleOpen()} className="bck-grey dropdown-system-body">
                                 <div className="bck-black drop-top-inner"> {this.state.selected}</div>
-                            </div>
-                        </div>
+                                <img className="drop-arrow" src="../Assets/DownArrow.png" alt=""/>
+                            </button>
                     );
                 case(DropdownType.general_bar):
                     return(
-                        <div style={{left: (this.props.offsetX + "%"), top: (this.props.offseY + "%"), height: "5%", width: "25%"}} className="bck-white fmc-dropdown-body">
-                            <div onClick={() => this.toggleOpen()} className="bck-grey drop-top">
+                            <button style={{left: (this.props.offsetX + "%"), top: (this.props.offseY + "%")}} onClick={() => this.toggleOpen()} className="bck-grey dropdown-general-body">
                                 {this.state.selected}
-                            </div>
-                        </div>
+                                <img className="drop-arrow" src="../Assets/DownArrow.png" alt=""/>
+                            </button>
                     );
             }
         }
@@ -79,25 +77,29 @@ export class Dropdown extends React.Component
             {
                 case(DropdownType.system_select):
                     return(
-                        <div style={{left: (this.props.offsetX + "%"), top: (this.props.offseY + "%")}} className="bck-blue-grey fmc-dropdown-body">
-                            <div onClick={() => this.toggleOpen()} className="bck-grey drop-top"><div className="bck-black drop-top-inner"> {this.state.selected}</div></div>
+                            <button style={{left: (this.props.offsetX + "%"), top: (this.props.offseY + "%")}} onClick={() => this.toggleOpen()} className="bck-grey dropdown-system-body">
+                                <div className="bck-black drop-top-inner"> 
+                                    {this.state.selected}
+                                </div>
+                                <img className="drop-arrow" src="../Assets/DownArrow.png" alt=""/>
                                 <div style={{height: (this.props.items.length * 80 + "%")}}className="bck-blue-grey
                                 drop-lower-body"><div className="bck-dark-grey drop-lower-inner">                            
                                     {item_elements}
                                 </div>
-                            </div>
-                        </div>
+                                </div>
+                            </button>
                     );
                 case(DropdownType.general_bar):
                 return(
-                    <div style={{left: (this.props.offsetX + "%"), top: (this.props.offseY + "%"), height: "5%", width: "25%"}} className="bck-white fmc-dropdown-body">
-                        <div onClick={() => this.toggleOpen()} className="bck-grey drop-top">{this.state.selected}</div>
-                            <div style={{height: (this.props.items.length * 80 + "%")}}className="bck-white
-                            drop-lower-body"><div className="bck-dark-grey drop-lower-inner">                            
-                                {item_elements}
-                            </div>
+                    <button style={{left: (this.props.offsetX + "%"), top: (this.props.offseY + "%")}} onClick={() => this.toggleOpen()} className="bck-grey dropdown-general-body">
+                        {this.state.selected}
+                        <img className="drop-arrow" src="../Assets/DownArrow.png" alt=""/>
+                        <div style={{height: (this.props.items.length * 80 + "%")}}className="bck-blue-grey
+                        drop-lower-body"><div className="bck-dark-grey drop-lower-inner">                            
+                        {item_elements}
                         </div>
                     </div>
+                </button>
                 );
             }
         }
