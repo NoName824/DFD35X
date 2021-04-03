@@ -16,15 +16,16 @@ import {
     setSimVar,
     useUpdate
 } from '../util.js';
-export class MFD_BODY extends React.Component
+
+type MFD_Props = {
+    side: string
+}
+export class MFD_BODY extends React.Component<MFD_Props>
 {
-    props: {
-        side: string
-    }
     state:{
         page: number
     }
-    constructor(props)
+    constructor(props: MFD_Props)
     {
         super(props)
         this.state = {
@@ -59,7 +60,7 @@ export class MFD_BODY extends React.Component
     }
 }
 
-const MFD_SCREEN = () => {
+export const MFD_SCREEN = () => {
     return(
         <body>
             <MFD_BODY side="left"/>

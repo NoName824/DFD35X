@@ -2,7 +2,7 @@
 type ButtonProps = {
     posX?: number,
     posY?: number,
-    onClick?: (e?) => any,
+    onClick?: (e?: any) => any,
     className?: string,
     disabled?: boolean,
     children?: any

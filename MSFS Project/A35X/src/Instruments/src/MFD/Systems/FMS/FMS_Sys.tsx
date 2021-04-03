@@ -2,9 +2,14 @@ import React from 'react'
 import {Dropdown, DropdownType} from '../../Components/dropdown'
 import './fms_style.scss'
 import {FMS_Init} from './Pages/FMS_Init'
-export class FMS_Sys extends React.Component
+
+type FMS_Props =
 {
-    constructor(props)
+
+}
+export class FMS_Sys extends React.Component<FMS_Props>
+{
+    constructor(props : FMS_Props)
     {
         super(props)
         this.state = {
@@ -26,10 +31,10 @@ export class FMS_Sys extends React.Component
     {
         return(
             <div className="SystemWindow">               
-                <Dropdown type={DropdownType.general_bar} items={["ACTIVE"]}/>
-                <Dropdown offsetX={25} type={DropdownType.general_bar} items={["POSITION"]}/>
-                <Dropdown offsetX={50} type={DropdownType.general_bar} items={["SEC INDEX"]}/>
-                <Dropdown offsetX={75} type={DropdownType.general_bar} items={["DATA"]}/>                              
+                <Dropdown onSelect={(i) => console.log("Selected " + i)} type={DropdownType.general_bar} items={["ACTIVE"]}/>
+                <Dropdown onSelect={(i) => console.log("Selected " + i)} offsetX={25} type={DropdownType.general_bar} items={["POSITION"]}/>
+                <Dropdown onSelect={(i) => console.log("Selected " + i)} offsetX={50} type={DropdownType.general_bar} items={["SEC INDEX"]}/>
+                <Dropdown onSelect={(i) => console.log("Selected " + i)} offsetX={75} type={DropdownType.general_bar} items={["DATA"]}/>                              
                 <div id="fms-header" className="bck-white frnt-grey"><h1>{this.state.currentPage}</h1></div>
                 {this.currentPage()}             
             </div>

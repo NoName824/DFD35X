@@ -4,16 +4,13 @@ import {Input} from '../../../Components/input'
 import { Button } from '../../../Components/button';
 
 
-
-export class FMS_Init extends React.Component
-{
-
-    state:
-    {
+type FMS_State = {
         flightNum: string,
         from: string,
         to: string
-    }
+}
+export class FMS_Init extends React.Component<{}, FMS_State>
+{
 
     execute()
     {

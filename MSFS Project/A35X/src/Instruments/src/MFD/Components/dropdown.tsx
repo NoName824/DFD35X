@@ -1,4 +1,3 @@
-import { List } from 'postcss/lib/list';
 import React from 'react';
 import './dropdown.scss'
 
@@ -7,23 +6,23 @@ export enum DropdownType
     system_select,
     general_bar
 }
-
-export class Dropdown extends React.Component
+type DropdownProps =
 {
-    props:
-    {
-        items: Array<string>,
-        type: DropdownType,
-        onSelect?: (number) => void
-        offsetX?: number,
-        offseY?: number
-    }
+    items: Array<string>;
+    type: DropdownType;
+    onSelect: (index: number) => void;
+    offsetX?: number;
+    offseY?: number;
+}
+
+export class Dropdown extends React.Component<DropdownProps>
+{
     state:
     {
         open: boolean,
         selected: string
     }
-    constructor(props)
+    constructor(props: DropdownProps)
     {
         super(props);
         this.state = {
@@ -68,7 +67,7 @@ export class Dropdown extends React.Component
             }
         }
         else{
-            var item_elements = [];
+            var item_elements: Array<JSX.Element> = [];
             this.props.items.map((item, index) => (
                 item_elements.push(<span style={{top: (index * (100 / this.props.items.length)  + "%")}} onClick={() => this.selectItem(index)} className='drop-item'>{item}</span>)
             ));           
