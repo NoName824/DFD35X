@@ -1,4 +1,4 @@
-$outline-black: rgb(10,10,10);
+$outline-black: rgb(20,20,20);
 @font-face {
     font-family: "ECAM Regular";
     src: url("/Fonts/ECAMFontRegular.ttf");
@@ -21,6 +21,10 @@ input::placeholder
 {
     color: orange;
     text-align: center;
+}
+.disabled::placeholder
+{
+    color: grey;
 }
 
 input:hover

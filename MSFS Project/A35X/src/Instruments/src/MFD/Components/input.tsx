@@ -8,9 +8,10 @@ type InputProps = {
     posX?: number,
     posY?: number,
     onChange: (value: string) => any,
-    className?: string
+    className?: string,
+    disabled?: boolean
 }
-export const Input = ({type, characterLimit, value: propsValue, posX, posY, onChange: onChangeProps, className, ...props}: InputProps) =>
+export const Input = ({type, characterLimit, value: propsValue, posX, posY, onChange: onChangeProps, className: propsClassName, ...props}: InputProps) =>
 {
     const onChange = (value: string) =>
     {
@@ -23,10 +24,10 @@ export const Input = ({type, characterLimit, value: propsValue, posX, posY, onCh
         if(propsValue === "")
             return ""
         else
-            return "cyan"
+            return "grey"
     }
     return(
-            <input maxLength={characterLimit} style={{left: (posX + "%"), top: (posY + "%"), color: currentColour() }} className={className} type={type} placeholder={Array((characterLimit? characterLimit : 0) + 1).join('0')} value={propsValue} onChange={(event) => onChange(event.target.value)} />
+            <input className={(props.disabled ?"disabled " : " ") + propsClassName} maxLength={characterLimit} style={{left: (posX + "%"), top: (posY + "%"), color: currentColour() }} disabled={props.disabled} type={type} placeholder={Array((characterLimit? characterLimit : 0) + 1).join(props.disabled ? '-' : '0')} value={propsValue} onChange={(event) => onChange(event.target.value)} />
         );
     
 }
