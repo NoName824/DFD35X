@@ -1,7 +1,13 @@
+@font-face {
+    font-family: "ECAM Regular";
+    src: url("/Fonts/ECAMFontRegular.ttf");
+}
+
 body {
     padding: none;
     margin: none;
     background-color: black;
+    font-family: "ECAM Regular" !important;
 }
 /*Colours*/
 .bck-blue-grey
