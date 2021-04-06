@@ -31,10 +31,10 @@ export class FMS_Sys extends React.Component<FMS_Props>
     {
         return(
             <div className="SystemWindow">               
-                <Dropdown onSelect={(i) => console.log("Selected " + i)} type={DropdownType.general_bar} items={["ACTIVE"]}/>
-                <Dropdown onSelect={(i) => console.log("Selected " + i)} offsetX={25} type={DropdownType.general_bar} items={["POSITION"]}/>
-                <Dropdown onSelect={(i) => console.log("Selected " + i)} offsetX={50} type={DropdownType.general_bar} items={["SEC INDEX"]}/>
-                <Dropdown onSelect={(i) => console.log("Selected " + i)} offsetX={75} type={DropdownType.general_bar} items={["DATA"]}/>                              
+                <Dropdown label="ACTIVE" onSelect={(i) => console.log("Selected " + i)} type={DropdownType.general_bar} items={["F-PLN", "PERF", "FUEL&LOAD", "WIND", "INIT"]}/>
+                <Dropdown label="POSITION" onSelect={(i) => console.log("Selected " + i)} offsetX={25} type={DropdownType.general_bar} items={["POSITION"]}/>
+                <Dropdown label="SEC INDEX" onSelect={(i) => console.log("Selected " + i)} offsetX={50} type={DropdownType.general_bar} items={["SEC INDEX"]}/>
+                <Dropdown label="DATA" onSelect={(i) => console.log("Selected " + i)} offsetX={75} type={DropdownType.general_bar} items={["DATA"]}/>                              
                 <div id="fms-header" className="bck-white frnt-grey"><h1>{this.state.currentPage}</h1></div>
                 {this.currentPage()}             
             </div>
