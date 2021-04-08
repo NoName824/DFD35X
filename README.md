@@ -14,4 +14,8 @@ Study-level is a term that is overused in flight simulation. It's basically like
   
 **3. Will it have a custom cockpit?**  
 Yes. This addon will have a highly accurate custom cockpit, as opposed to most other current addons that use the default cockpits from other aircraft.  
+
+**4. How can I contribute?**  
+Please read our [Contributing Guide](.github/Contributing.md).
+
 ### If you have anymore questions, join our discord server and ask there.
