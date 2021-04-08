@@ -21,7 +21,7 @@ npm install
 
 ## Building
 
-### To Build Any Changes from within the src folder
+### To build any changes made from within the src folder
 ```shell
 npm run build
 ```
