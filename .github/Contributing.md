@@ -27,7 +27,7 @@ npm run build
 ```
 
 ## Help
-If you require help with contributing to our project, please ask any questions within the (CHECK THIS)`#channel-name` channel within our discord server.
+If you require help with contributing to our project, please ask any questions within the `#development-help` channel within our discord server.
 
 ## Pull Requests
 
