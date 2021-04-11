@@ -8,7 +8,6 @@ import { SURV_Sys } from './Systems/SURV_Sys'
 import { Checklist_Sys } from './Systems/Checklist_Sys'
 import { FCU_BKUP_Sys } from './Systems/FCU_BKUP_Sys'
 
-
 import {
     renderTarget,
     useInteractionEvent,
@@ -20,11 +19,11 @@ import {
 type MFD_Props = {
     side: string
 }
-export class MFD_BODY extends React.Component<MFD_Props>
+type MFD_State = {
+    page: number
+}
+export class MFD_BODY extends React.Component<MFD_Props, MFD_State>
 {
-    state:{
-        page: number
-    }
     constructor(props: MFD_Props)
     {
         super(props)
@@ -32,6 +31,7 @@ export class MFD_BODY extends React.Component<MFD_Props>
             page: 0
         };
     }
+
     currentPage()
     {
         switch(this.state.page)
