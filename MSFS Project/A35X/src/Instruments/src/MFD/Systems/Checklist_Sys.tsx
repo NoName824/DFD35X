@@ -1,8 +1,5 @@
 import React from 'react'
-export class Checklist_Sys extends React.Component
+export const Checklist_Sys = () =>
 {
-    render()
-    {
-        return(<div className="SystemWindow">Checklist System</div>);
-    }
+    return(<div className="SystemWindow">Checklist System</div>);
 }

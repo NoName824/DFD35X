@@ -1,5 +1,5 @@
 import ReactDOM from 'react-dom'
-import React from 'react'
+import React, { useState } from 'react'
 import './mfd-main-style.scss'
 import { Dropdown, DropdownType } from './Components/dropdown'
 import { FMS_Sys } from './Systems/FMS/FMS_Sys'
@@ -7,7 +7,7 @@ import { ATC_COM_Sys } from './Systems/ATC_COM_Sys'
 import { SURV_Sys } from './Systems/SURV_Sys'
 import { Checklist_Sys } from './Systems/Checklist_Sys'
 import { FCU_BKUP_Sys } from './Systems/FCU_BKUP_Sys'
-
+import { FlightPlanManager } from '../wtsdk/src/flightplanning/FlightPlanManager'
 import {
     renderTarget,
     useInteractionEvent,
@@ -17,27 +17,22 @@ import {
 } from '../util.js';
 
 type MFD_Props = {
-    side: string
+    side: string,
+    flightPlanManager: FlightPlanManager,
 }
 type MFD_State = {
-    page: number
+    page: number,
 }
-export class MFD_BODY extends React.Component<MFD_Props, MFD_State>
+export const MFD_Body = (props: MFD_Props) => 
 {
-    constructor(props: MFD_Props)
-    {
-        super(props)
-        this.state = {
-            page: 0
-        };
-    }
+    const [page, setPage] = useState(Number);
 
-    currentPage()
+    function currentPage()
     {
-        switch(this.state.page)
+        switch(page)
         {
             case 0: 
-                return(<FMS_Sys/>);
+                return(<FMS_Sys flightPlanManager={props.flightPlanManager}/>);
             case 1:
                 return(<ATC_COM_Sys/>);
             case 2:
@@ -48,26 +43,25 @@ export class MFD_BODY extends React.Component<MFD_Props, MFD_State>
                 return(<FCU_BKUP_Sys/>);
         }
     }
-    render()
-    {
-        return(
-            <div id={this.props.side} className="mfd-body"> 
-                <Dropdown type={DropdownType.system_select} onSelect={(index) => this.setState({page: index})} items={[("FMS" + (this.props.side === "left" ? "1" : "2")), "ATC COM", "SURV", "C/L MENU", "FCU BKUP"]}></Dropdown>
-                <span id="flight-num">{getSimVar("ATC FLIGHT NUMBER", "string")}</span>
-                {this.currentPage()}
-            </div>
-        );
-    }
+    return(
+        <div id={props.side} className="mfd-body"> 
+            <Dropdown type={DropdownType.system_select} onSelect={(index) => setPage(index)} items={[("FMS" + (props.side === "left" ? "1" : "2")), "ATC COM", "SURV", "C/L MENU", "FCU BKUP"]}></Dropdown>
+            <span id="flight-num">{getSimVar("ATC FLIGHT NUMBER", "string")}</span>
+            {currentPage()}
+        </div>
+    );
 }
 
 export const MFD_SCREEN = () => {
+    const [instrument] = useState(new A35X_MFD_Logic());
+    const [flightPlanManager] = useState(() => new FlightPlanManager(instrument))
     return(
         <body>
-            <MFD_BODY side="left"/>
+            <MFD_Body side="left" flightPlanManager={flightPlanManager}/>
             <div className="bck-grey" id="mfd-splitter"></div>
-            <MFD_BODY side="right"/>
+            <MFD_Body side="right" flightPlanManager={flightPlanManager}/>
         </body>
-    )
+    );
 }
 
 ReactDOM.render(<MFD_SCREEN />, renderTarget)

@@ -1,36 +1,29 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {Dropdown, DropdownType} from '../../Components/dropdown'
 import './fms_style.scss'
 import {FMS_Init} from './Pages/FMS_Init'
 import {FMS_Perf} from './Pages/FMS_Perf'
+import { FlightPlanManager } from '../../../wtsdk/src/flightplanning/FlightPlanManager'
 
 type FMS_Props =
 {
-
+    flightPlanManager: FlightPlanManager,
 }
-export class FMS_Sys extends React.Component<FMS_Props>
+export const FMS_Sys =(props: FMS_Props) =>
 {
-    constructor(props : FMS_Props)
+    const [currentPage, setCurrentPage] = useState(String)
+
+    function getPage()
     {
-        super(props)
-        this.state = {
-            currentPage: "ACTIVE/INIT"
-        }
-    }
-    state:{
-        currentPage: string
-    }
-    currentPage()
-    {
-        switch(this.state.currentPage)
+        switch(currentPage)
         {
             case("ACTIVE/INIT"):
-                return(<FMS_Init/>);
+                return(<FMS_Init flightPlanManager={props.flightPlanManager}/>);
             case("ACTIVE/PERF"):
                 return(<FMS_Perf/>);
         }
     }
-    selectActivePage(index: number)
+    function selectActivePage(index: number)
     {
         switch(index)
         {
@@ -51,17 +44,15 @@ export class FMS_Sys extends React.Component<FMS_Props>
             break;
         }
     }
-    render()
-    {
-        return(
-            <div className="SystemWindow">               
-                <Dropdown label="ACTIVE" onSelect={(i) => this.selectActivePage(i)} type={DropdownType.general_bar} items={["F-PLN", "PERF", "FUEL&LOAD", "WIND", "INIT"]}/>
-                <Dropdown label="POSITION" onSelect={(i) => console.log("Selected " + i)} offsetX={25} type={DropdownType.general_bar} items={["POSITION"]}/>
-                <Dropdown label="SEC INDEX" onSelect={(i) => console.log("Selected " + i)} offsetX={50} type={DropdownType.general_bar} items={["SEC INDEX"]}/>
-                <Dropdown label="DATA" onSelect={(i) => console.log("Selected " + i)} offsetX={75} type={DropdownType.general_bar} items={["DATA"]}/>                              
-                <div id="fms-header" className="bck-white frnt-grey"><h1>{this.state.currentPage}</h1></div>
-                {this.currentPage()}             
-            </div>
-        );
-    }
+    return(
+        <div className="SystemWindow">               
+            <Dropdown label="ACTIVE" onSelect={(i) => selectActivePage(i)} type={DropdownType.general_bar} items={["F-PLN", "PERF", "FUEL&LOAD", "WIND", "INIT"]}/>
+            <Dropdown label="POSITION" onSelect={(i) => console.log("Selected " + i)} offsetX={25} type={DropdownType.general_bar} items={["POSITION"]}/>
+            <Dropdown label="SEC INDEX" onSelect={(i) => console.log("Selected " + i)} offsetX={50} type={DropdownType.general_bar} items={["SEC INDEX"]}/>
+            <Dropdown label="DATA" onSelect={(i) => console.log("Selected " + i)} offsetX={75} type={DropdownType.general_bar} items={["DATA"]}/>                              
+            <div id="fms-header" className="bck-white frnt-grey"><h1>{currentPage}</h1></div>
+            {getPage()}             
+        </div>
+    );
+    
 }

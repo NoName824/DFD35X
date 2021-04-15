@@ -1,9 +1,6 @@
 import React from 'react'
 
-export class ATC_COM_Sys extends React.Component
+export const ATC_COM_Sys = () =>
 {
-    render()
-    {
-        return(<div className="SystemWindow">ATC Com System</div>);
-    }
+    return(<div className="SystemWindow">ATC Com System</div>);
 }
