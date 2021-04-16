@@ -5,7 +5,6 @@ import OIS_MAIN_PAGE from './Pages/Main Page/main-page'
 import OIS_TEST from './test'
 import oisContext from "./oisContext"
 import './index-style.scss';
-import { renderTarget } from '../util';
 
 import {
     renderTarget,
