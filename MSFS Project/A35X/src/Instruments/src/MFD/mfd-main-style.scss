@@ -19,6 +19,7 @@ h2{
 
 $grey:  #757575;
 $outline-black: rgb(10,10,10);
+$dark-grey: #404040;
 .bck-blue-grey
 {
     background-color: #394a52;
@@ -31,9 +32,13 @@ $outline-black: rgb(10,10,10);
 {
     color: $grey;
 }
+.frnt-white
+{
+    color: white;
+}
 .bck-dark-grey
 {
-    background-color: #404040;
+    background-color: $dark-grey;
 }
 .bck-black
 {

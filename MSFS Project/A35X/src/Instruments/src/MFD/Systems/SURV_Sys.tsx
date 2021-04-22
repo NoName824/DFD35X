@@ -1,8 +1,5 @@
 import React from 'react'
-export class SURV_Sys extends React.Component
+export const SURV_Sys = () =>
 {
-    render()
-    {
-        return(<div className="SystemWindow">Survey System</div>);
-    }
+    return(<div className="SystemWindow">Survey System</div>);
 }

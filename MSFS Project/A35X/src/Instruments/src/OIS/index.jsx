@@ -4,15 +4,9 @@ import ReactDOM from 'react-dom';
 import OIS_MAIN_PAGE from './Pages/Main Page/main-page'
 import OIS_TEST from './test'
 import oisContext from "./oisContext"
-import './index-style.scss';
+// import './idex-style.scss';
+import { render } from '../Hooks/index'
 
-import {
-    renderTarget,
-    useInteractionEvent,
-    getSimVar,
-    setSimVar,
-    useUpdate
-} from '../util.js';
 
 function OIS_DISPLAY() {
     let [oisPage, setOisPage] = useState(0)
@@ -48,4 +42,4 @@ function OIS_DISPLAY() {
         
 }
 
-ReactDOM.render(<OIS_DISPLAY />, renderTarget);
+render(<OIS_DISPLAY />);

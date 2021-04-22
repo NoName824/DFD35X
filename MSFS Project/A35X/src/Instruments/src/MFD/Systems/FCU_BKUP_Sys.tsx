@@ -1,8 +1,5 @@
 import React from 'react'
-export class FCU_BKUP_Sys extends React.Component
+export const FCU_BKUP_Sys = () =>
 {
-    render()
-    {
-        return(<div className="SystemWindow">FCU Backup System</div>);
-    }
+    return(<div className="SystemWindow">FCU Backup System</div>);
 }

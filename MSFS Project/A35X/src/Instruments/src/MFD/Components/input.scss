@@ -3,7 +3,7 @@ $outline-black: rgb(20,20,20);
     font-family: "ECAM Regular";
     src: url("/Fonts/ECAMFontRegular.ttf");
 }
-
+@import '../mfd-main-style.scss';
 input
 {
     position: absolute;
@@ -16,6 +16,9 @@ input
     border-color: $outline-black white white $outline-black;
     text-transform: uppercase;
     text-align: center;
+}
+.disabled{
+    background-color: $dark-grey;
 }
 input::placeholder
 {

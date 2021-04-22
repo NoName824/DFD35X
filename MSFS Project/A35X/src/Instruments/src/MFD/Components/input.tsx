@@ -3,31 +3,45 @@ import './input.scss'
 
 type InputProps = {
     type?: 'text' | 'number',
+    defaultValue?: any,
     value?: any,
     characterLimit?: number,
     posX?: number,
     posY?: number,
     onChange: (value: string) => any,
     className?: string,
-    disabled?: boolean
+    disabled?: boolean,
+    placeHolder?: string
 }
-export const Input = ({type, characterLimit, value: propsValue, posX, posY, onChange: onChangeProps, className: propsClassName, ...props}: InputProps) =>
+export const Input = ({type, characterLimit,defaultValue: defaultValue, value: propsValue, posX, posY, onChange: onChangeProps, className: propsClassName, ...props}: InputProps) =>
 {
+    let val = defaultValue
     const onChange = (value: string) =>
     {
+        val = value
         if(value !== "")
-
-        onChangeProps(value)
+            onChangeProps(value)
     }
     function currentColour(): string
     {
-        if(propsValue === "")
+        if(val === "")
             return ""
         else
-            return "grey"
+            return "cyan"
+    }
+    function placeholder(): string
+    {
+        if(props.disabled)
+        {
+            return (Array((characterLimit? characterLimit : 0) + 1).join('-'))
+        }
+        else
+        {
+            return (props.placeHolder ? props.placeHolder : Array((characterLimit? characterLimit : 0) + 1).join(props.disabled ? '-' : '0'))
+        }
     }
     return(
-            <input className={(props.disabled ?"disabled " : " ") + propsClassName} maxLength={characterLimit} style={{left: (posX + "%"), top: (posY + "%"), color: currentColour() }} disabled={props.disabled} type={type} placeholder={Array((characterLimit? characterLimit : 0) + 1).join(props.disabled ? '-' : '0')} value={propsValue} onChange={(event) => onChange(event.target.value)} />
+            <input color={currentColour()} className={(props.disabled ?"disabled " : " ") + propsClassName} maxLength={characterLimit} style={{left: (posX + "%"), top: (posY + "%"), color: currentColour() }} disabled={props.disabled} type={type} placeholder={placeholder()} value={propsValue} defaultValue={defaultValue} onChange={(event) => onChangeProps(event.target.value)} />
         );
     
 }

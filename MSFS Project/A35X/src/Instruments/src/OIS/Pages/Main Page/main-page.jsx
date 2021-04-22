@@ -1,9 +1,6 @@
 import {React, useContext} from 'react';
 import './main-page-style.scss';
 import './main-page-buttons-style.scss';
-import {
-    setSimVar
-} from '../../../util.js'
 import oisContext from '../../oisContext';
 
 const OIS_MAIN_PAGE = (props) => {
