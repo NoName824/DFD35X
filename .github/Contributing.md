@@ -15,7 +15,7 @@ Welcome to the A35X project repository. Thank you for your interest in contribut
 
 ```shell
 git clone https://github.com/Dynamic6448/DFD35X.git
-cd "DFD35X/MSFS Project/A35X"
+cd DFD35X/A35X
 npm install
 ```
 
