@@ -1,14 +1,7 @@
 import ReactDOM from 'react-dom'
 import {useState} from 'react'
 import './ecam-main-style.scss'
-import {
-    renderTarget,
-    useInteractionEvent,
-    getSimVar,
-    setSimVar,
-    useUpdate
-} from '../util.js';
-
+import { render } from '../Hooks/index'
 const ECAM_SCREEN = () => {
     return(
         <div>
@@ -17,4 +10,4 @@ const ECAM_SCREEN = () => {
     )
 }
 
-ReactDOM.render(<ECAM_SCREEN />, renderTarget)
+render(<ECAM_SCREEN />)

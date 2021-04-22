@@ -1,27 +1,27 @@
 import ReactDOM from 'react-dom'
 import {useState} from 'react'
 import './efis-main-style.scss'
-import {
-    renderTarget,
-    useInteractionEvent,
-    getSimVar,
-    setSimVar,
-    useUpdate
-} from '../util.js';
-
+import { render } from '../Hooks/index'
+import {useUpdate} from '../Hooks/hooks'
+import {useSimVar} from '../Hooks/simVars'
 const EFIS_SCREEN = () => {
+    const [pitchVar] = useSimVar('A:PLANE PITCH DEGREES', 'degrees')
+    const [rollVar] = useSimVar('A:PLANE BANK DEGREES', 'degrees')
+    const [IASVar] = useSimVar('A:AIRSPEED INDICATED', 'knots')
+    const [altMSLVar] = useSimVar('A:INDICATED ALTITUDE', 'feet')
+
     let [pitch, setPitch] = useState(0)
     let [roll, setRoll] = useState(0)
     let [IAS, setIAS] = useState(0)
     let [altMSL, setAltMSL] = useState(0)
     
     useUpdate(dt => {
-        setPitch(getSimVar('A:PLANE PITCH DEGREES', 'degrees'))
-        setRoll(getSimVar('A:PLANE BANK DEGREES', 'degrees'))
-        setIAS(getSimVar('A:AIRSPEED INDICATED', 'knots'))
-        setAltMSL(getSimVar('A:INDICATED ALTITUDE', 'feet'))
+        setPitch(pitchVar)
+        setRoll(rollVar)
+        setIAS(IASVar)
+        setAltMSL(altMSLVar)
     })
-
+    
     let altitudeTapeArray = []
     for (const x of Array(84)) {
         altitudeTapeArray.push(x)
@@ -70,4 +70,4 @@ const EFIS_SCREEN = () => {
     )
 }
 
-ReactDOM.render(<EFIS_SCREEN />, renderTarget)
+render(<EFIS_SCREEN />)

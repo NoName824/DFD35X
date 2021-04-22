@@ -1,21 +1,3 @@
-/*
- * Copyright (C) 2020 FlyByWire Simulations and its contributors
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-// modified by Noga 
-
 'use strict';
 
 const os = require('os');
@@ -28,12 +10,13 @@ const replace = require('@rollup/plugin-replace');
 const postcss = require('rollup-plugin-postcss');
 const tailwindcss = require('tailwindcss');
 
-const instrumentTemplate = require('./template/rollup.js');
+const instrumentTemplate = require('./msfs-react-plugin');
 
-const TMPDIR = `${os.tmpdir()}/a35x-instruments-gen`;
+const TMPDIR = `${os.tmpdir()}/dfd35x-instruments-gen`;
 
 const extensions = ['.ts', '.tsx', '.js', '.jsx', '.mjs'];
 
+const extraInstruments = [];
 
 function makePostcssPluginList(instrumentPath) {
     const usesTailwind = fs.existsSync(`${__dirname}/src/${instrumentPath}/tailwind.config.js`);
@@ -42,11 +25,13 @@ function makePostcssPluginList(instrumentPath) {
 }
 
 function getInstrumentsToCompile() {
-    const baseInstruments = fs.readdirSync(`${__dirname}/src`, { withFileTypes: true })
+    const baseInstruments = fs
+        .readdirSync(`${__dirname}/src`, { withFileTypes: true })
         .filter((d) => d.isDirectory() && fs.existsSync(`${__dirname}/src/${d.name}/config.json`));
 
     return [
         ...baseInstruments.map(({ name }) => ({ path: name, name, isInstrument: true })),
+        ...extraInstruments.map((def) => ({ ...def, isInstrument: false }))
     ];
 }
 
@@ -58,45 +43,65 @@ function getTemplatePlugin({ name, config, imports = [], isInstrument }) {
         getCssBundle() {
             return fs.readFileSync(`${TMPDIR}/${name}-gen.css`).toString();
         },
-        outputDir: `${__dirname}/../../PackageSources/html_ui/Pages/VCockpit/Instruments/generated`,
-    })
+        outputDir: `${__dirname}/../../PackageSources/html_ui/Pages/VCockpit/Instruments/`,
+        instrumentDir: `dfd35x/${name}`
+    });
+    // eslint-disable-next-line no-else-return
 }
 
-module.exports = getInstrumentsToCompile()
-    .map(({ path, name, isInstrument }) => {
-        const config = JSON.parse(fs.readFileSync(`${__dirname}/src/${path}/config.json`));
+module.exports = getInstrumentsToCompile().map(({ path, name, isInstrument }) => {
+    const config = JSON.parse(fs.readFileSync(`${__dirname}/src/${path}/config.json`));
 
-        return {
-            input: `${__dirname}/src/${path}/${config.index}`,
-            output: {
-                file: `${TMPDIR}/${name}-gen.js`,
-                format: 'iife',
-            },
-            plugins: [
-                image(),
-                nodeResolve({ extensions }),
-                commonjs({ include: /node_modules/ }),
-                babel({
-                    presets: [
-                        ['@babel/preset-env', { targets: { safari: '11' } }],
-                        ['@babel/preset-react', { runtime: 'automatic' }],
-                        ['@babel/preset-typescript'],
-                    ],
-                    plugins: [
-                        '@babel/plugin-proposal-class-properties',
-                        ['@babel/plugin-transform-runtime', { regenerator: true }],
-                    ],
-                    babelHelpers: 'runtime',
-                    compact: false,
-                    extensions,
-                }),
-                replace({ 'process.env.NODE_ENV': '"production"' }),
-                postcss({
-                    use: { sass: {} },
-                    plugins: makePostcssPluginList(path),
-                    extract: `${TMPDIR}/${name}-gen.css`,
-                }),
-                getTemplatePlugin({ name, path, imports: [], config, isInstrument }),
-            ],
-        };
-    });
+    return {
+        input: `${__dirname}/src/${path}/${config.index}`,
+        output: {
+            file: `${TMPDIR}/${name}-gen.js`,
+            format: 'iife'
+        },
+        plugins: [
+            image(),
+            nodeResolve({ extensions }),
+            commonjs({ include: /node_modules/ }),
+            babel({
+                presets: [
+                    ['@babel/preset-env', { targets: { safari: '11' } }],
+                    ['@babel/preset-react', { runtime: 'automatic' }],
+                    ['@babel/preset-typescript']
+                ],
+                plugins: [
+                    '@babel/plugin-proposal-class-properties',
+                    ['@babel/plugin-transform-runtime', { regenerator: true }]
+                ],
+                babelHelpers: 'runtime',
+                compact: false,
+                extensions
+            }),
+            replace({ 'process.env.NODE_ENV': '"production"' }),
+            postcss({
+                use: { sass: {} },
+                plugins: makePostcssPluginList(path),
+                extract: `${TMPDIR}/${name}-gen.css`
+            }),
+            getTemplatePlugin({
+                name,
+                path,
+                imports: [
+                    '/JS/dataStorage.js',
+                    '/JS/SimPlane.js',
+                    '/JS/simvar.js',
+                    '/Pages/VCockpit/Instruments/FlightElements/WaypointLoader.js',
+                    '/Pages/VCockpit/Instruments/Shared/FlightElements/Runway.js',
+                    '/Pages/VCockpit/Instruments/FlightElements/Waypoint.js',
+                    '/Pages/VCockpit/Instruments/Shared/FlightElements/Approach.js',
+                    '/Pages/VCockpit/Instruments/NavSystems/Shared/LogicElements/SearchField.js',
+                    '/Pages/VCockpit/Instruments/Shared/FlightElements/FlightPlan.js',
+                    '/Pages/VCockpit/Instruments/Shared/Utils/RadioNav.js',
+                    '/Pages/VCockpit/Instruments/NavSystems/Shared/NavSystem.js',
+                    '/Pages/VCockpit/Instruments/Shared/FlightElements/GeoCalc.js'
+                ],
+                config,
+                isInstrument
+            })
+        ]
+    };
+});

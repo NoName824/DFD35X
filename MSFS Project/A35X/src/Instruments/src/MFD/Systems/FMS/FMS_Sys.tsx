@@ -1,24 +1,28 @@
+
 import React, { useState } from 'react'
 import {Dropdown, DropdownType} from '../../Components/dropdown'
 import './fms_style.scss'
 import {FMS_Init} from './Pages/FMS_Init'
 import {FMS_Perf} from './Pages/FMS_Perf'
-import { FlightPlanManager } from '../../../wtsdk/src/flightplanning/FlightPlanManager'
+import { FlightPlanManager } from '../../../flightplanning/FlightPlanManager'
+import { FMCDataManager } from '../../A35X_FMCDataManager'
+import { MFD_StateManager } from '../../MFD_StateManager'
 
 type FMS_Props =
 {
-    flightPlanManager: FlightPlanManager,
+    dataManager: FMCDataManager,
+    stateManager: MFD_StateManager
 }
 export const FMS_Sys =(props: FMS_Props) =>
 {
     const [currentPage, setCurrentPage] = useState(String)
-
+    
     function getPage()
     {
         switch(currentPage)
         {
             case("ACTIVE/INIT"):
-                return(<FMS_Init flightPlanManager={props.flightPlanManager}/>);
+                return(<FMS_Init stateManager={props.stateManager} dataManager={props.dataManager}/>);
             case("ACTIVE/PERF"):
                 return(<FMS_Perf/>);
         }
@@ -28,20 +32,20 @@ export const FMS_Sys =(props: FMS_Props) =>
         switch(index)
         {
             case(0):
-                this.setState({currentPage: "ACTIVE/F-PLN"});
+                setCurrentPage("ACTIVE/F-PLN");
                 break;
             case(1):
-                this.setState({currentPage: "ACTIVE/PERF"});
-                break;
+                setCurrentPage("ACTIVE/PERF");
+            break;
             case(2):
-                this.setState({currentPage: "ACTIVE/FUEL&LOAD"});
+                setCurrentPage("ACTIVE/FUEL&LOAD");
                 break;
             case(3):
-                this.setState({currentPage: "ACTIVE/WIND"});
+                setCurrentPage("ACTIVE/WIND");
                 break;
             case(4):
-                this.setState({currentPage: "ACTIVE/INIT"});
-            break;
+            setCurrentPage("ACTIVE/INIT");
+                break;
         }
     }
     return(
