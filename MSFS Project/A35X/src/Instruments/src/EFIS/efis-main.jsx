@@ -4,11 +4,20 @@ import './efis-main-style.scss'
 import { render } from '../Hooks/index'
 import {useUpdate} from '../Hooks/hooks'
 import {useSimVar} from '../Hooks/simVars'
+
+import Mask from "./imgs/EFIS_MASK.png";
+import overlay from "./imgs/staticoverlay.png";
+import horizon from "./imgs/EFIS_PFD_HORIZON.png";
+import horizonDisp from "./imgs/EFIS_PFD_HORIZON_disp.png";
+import airspeedIndicator from "./imgs/EFIS_PFD_AIRSPEED_INDICATOR.png";
+import airspeedIndicatorOverlay from "./imgs/EFIS_PFD_AIRSPEED_INDICATOR.png";
+
+
 const EFIS_SCREEN = () => {
-    const [pitchVar] = useSimVar('A:PLANE PITCH DEGREES', 'degrees')
-    const [rollVar] = useSimVar('A:PLANE BANK DEGREES', 'degrees')
-    const [IASVar] = useSimVar('A:AIRSPEED INDICATED', 'knots')
-    const [altMSLVar] = useSimVar('A:INDICATED ALTITUDE', 'feet')
+    const [pitchVar, setPitchVar] = useSimVar('A:PLANE PITCH DEGREES', 'degrees')
+    const [rollVar, setRollVar] = useSimVar('A:PLANE BANK DEGREES', 'degrees')
+    const [IASVar, setIASVar] = useSimVar('A:AIRSPEED INDICATED', 'knots')
+    const [altMSLVar, setAltMSLVar] = useSimVar('A:INDICATED ALTITUDE', 'feet')
 
     let [pitch, setPitch] = useState(0)
     let [roll, setRoll] = useState(0)
@@ -31,31 +40,31 @@ const EFIS_SCREEN = () => {
     return(
         <div>
             <div id="background">
-                <img src="/Pages/VCockpit/Instruments/generated/EFIS/EFIS_MASK.png"/>
+                <img src={Mask}/>
             </div>
 
             <div id="static_overlay">
-                <img src="/Pages/VCockpit/Instruments/generated/EFIS/staticoverlay.png"/>
+                <img src={overlay}/>
             </div>
 
             <div id="horizon">
-                <img src="/Pages/VCockpit/Instruments/generated/EFIS/EFIS_PFD_HORIZON.png" style={{
+                <img src={horizon} style={{
                     transformOrigin: `center ${2000 - (-pitch*7.4)}px`, 
                     transform: 'translateY( ' + (-pitch * 7.4).toString() + 
                     'px) rotate(' + roll.toString() + 'deg'
                 }}/>
             </div>
             <div id="horizon_indicator">
-                <img src="/Pages/VCockpit/Instruments/generated/EFIS/EFIS_PFD_HORIZON_disp.png"/>
+                <img src={horizonDisp}/>
             </div>
 
             <div id="airspeed_indicator">
-                <img src="/Pages/VCockpit/Instruments/generated/EFIS/EFIS_PFD_AIRSPEED_INDICATOR.png" style={{
+                <img src={airspeedIndicator} style={{
                     transform: IAS >= 30 ? 'translateY(' + ((IAS - 30) * 3.8).toString() + 'px)' : 'none'
                 }}/>
             </div>
             <div id="airspeed_indicator_overlay">
-                <img src="/Pages/VCockpit/Instruments/generated/EFIS/EFIS_PFD_AIRSPEED_INDICATOR_OVERLAY.png"/>
+                <img src={airspeedIndicatorOverlay}/>
             </div>
 
             <div id="altitude_indicator">
