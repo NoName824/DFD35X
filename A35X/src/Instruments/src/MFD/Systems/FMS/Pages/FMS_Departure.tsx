@@ -73,7 +73,7 @@ export const FMS_Departure = (props: Departure_Props) =>
     {   
         console.log("Departure Index is " + props.stateManager.flightPlanManager.getDepartureProcIndex());
         if(props.stateManager.flightPlanManager.getDepartureProcIndex() > -1)
-            return(props.stateManager.flightPlanManager.getOrigin().infos.departures[props.stateManager.flightPlanManager.getDepartureProcIndex()].enRouteTransitions.map(a => a.name));
+            return(props.stateManager.flightPlanManager.getDeparture().enRouteTransitions.map(a => a.name));
         return([""])
     }
     function selectRunway(index: number)
@@ -94,13 +94,13 @@ export const FMS_Departure = (props: Departure_Props) =>
         props.stateManager.flightPlanManager.setDepartureProcIndex(num);
         props.stateManager.flightPlanManager.setDepartureEnRouteTransitionIndex(-1);
 
-        props.stateManager.updateSID(props.stateManager.flightPlanManager.getOrigin().infos.departures[num].name);
+        props.stateManager.updateSID(props.stateManager.flightPlanManager.getDeparture().name);
         props.stateManager.updateTrans('');
     }
     function selectTransition(index: number)
     {
         props.stateManager.flightPlanManager.setDepartureEnRouteTransitionIndex(index);
-        props.stateManager.updateTrans(props.stateManager.flightPlanManager.getOrigin().infos.departures[props.stateManager.flightPlanManager.getDepartureProcIndex()].enRouteTransitions[index].name)
+        props.stateManager.updateTrans(props.stateManager.flightPlanManager.getDeparture().enRouteTransitions[index].name)
     }
     function ILSInfo(): string
     {

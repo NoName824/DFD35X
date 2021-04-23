@@ -42,7 +42,7 @@ export class MFD_StateManager
                 this.origin = this.flightPlanManager.getOrigin().ident;
                 this.destination = this.flightPlanManager.getDestination().ident;
                 this.depRunway = this.flightPlanManager.getDepartureRunway().designation;
-                var depProc = this.flightPlanManager.getOrigin().infos.departures[this.flightPlanManager.getDepartureProcIndex()]
+                var depProc = this.flightPlanManager.getDeparture();
                 this.SID = depProc.name;
                 if(this.SID != '')
                     this.depTransition = depProc.enRouteTransitions[this.flightPlanManager.getDepartureEnRouteTransitionIndex()].name;
