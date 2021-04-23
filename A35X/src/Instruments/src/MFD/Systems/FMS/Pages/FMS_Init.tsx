@@ -64,8 +64,7 @@ export const FMS_Init = (props: Init_Props) =>
         props.dataManager.GetAirportByIdent(value).then((airport) => {
             if(airport)
             {
-                props.dataManager.flightPlanManager.setOrigin(airport.icao);
-                props.stateManager.updateOrigin(value)
+                props.dataManager.flightPlanManager.setOrigin(airport.icao).then(() => props.stateManager.updateOrigin(value));
             }
         });   
         if(value.length == 0)
@@ -77,8 +76,7 @@ export const FMS_Init = (props: Init_Props) =>
         props.dataManager.GetAirportByIdent(value).then((airport) => {
             if(airport)
             {
-                props.dataManager.flightPlanManager.setDestination(airport.icao);
-                props.stateManager.updateDestination(value)
+                props.dataManager.flightPlanManager.setDestination(airport.icao).then(() => props.stateManager.updateDestination(value));
             }
         });  
         if(value.length == 0)
