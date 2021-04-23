@@ -60,8 +60,8 @@ export const MFD_Body = (props: Body_Props) =>
         setFlightNum(props.stateManager.flightNumber);
     }
     return( 
-        <div id={props.side} className="mfd-body"> 
-            <Dropdown type={DropdownType.system_select} onSelect={(index) => setPage(index)} items={[("FMS" + (props.side === "left" ? "1" : "2")), "ATC COM", "SURV", "C/L MENU", "FCU BKUP"]}></Dropdown>
+        <div id={props.side} className="mfd-body">   
+            <Dropdown defaultIndex={0} type={DropdownType.system_select} onSelect={(index) => setPage(index)} items={[("FMS" + (props.side === "left" ? "1" : "2")), "ATC COM", "SURV", "C/L MENU", "FCU BKUP"]}></Dropdown>
             <span id="flight-num">{props.stateManager.flightNumber}</span>
             {currentPage()}
         </div>

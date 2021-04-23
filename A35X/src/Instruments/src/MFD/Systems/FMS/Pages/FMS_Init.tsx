@@ -8,7 +8,7 @@ import { FlightPlanManager } from '../../../../flightplanning/FlightPlanManager'
 import {FlightPlanAsoboSync} from '../../../../flightplanning/FlightPlanAsoboSync'
 import { FMCDataManager } from "../../../A35X_FMCDataManager";
 import { MFD_StateManager } from "../../../MFD_StateManager";
-
+import { useSimVar } from "../../../../Hooks/simVars";
 export enum ClimbMode
 {
     Econ,
@@ -16,7 +16,8 @@ export enum ClimbMode
 type Init_Props =
 {
     dataManager: FMCDataManager,
-    stateManager: MFD_StateManager
+    stateManager: MFD_StateManager,
+    selectPage: (value: string) => void,
 }
 export const FMS_Init = (props: Init_Props) =>
 {   
@@ -38,10 +39,12 @@ export const FMS_Init = (props: Init_Props) =>
 
     const [didLoad, setDidLoad] = useState(false);
     
+    const [flightNumVar, setFlightNumVar] = useSimVar("ATC FLIGHT NUMBER", "string");
+
+
     useEffect(() => {
         if(!didLoad)
         {
-            console.log("Loading Flight Plan")
             setDidLoad(true);
             if(props.stateManager.onUpdate.find(() => onUpdate()) == undefined)
                 props.stateManager.onUpdate.push(() => onUpdate());
@@ -57,7 +60,6 @@ export const FMS_Init = (props: Init_Props) =>
     }
     function tryUpdateOrigin(value: string)
     {
-        console.log("Setting Origin to: " + value);
         setOrigin(value.toUpperCase());
         props.dataManager.GetAirportByIdent(value).then((airport) => {
             if(airport)
@@ -97,7 +99,7 @@ export const FMS_Init = (props: Init_Props) =>
     function trySetFlightNum(value: string)
     {
         setFlightNum(value.toUpperCase());
-        SimVar.SetSimVarValue("ATC FLIGHT NUMBER", "string", value)
+        setFlightNumVar(value);
         props.stateManager.updateFlightNum(value);
     }
     return(
@@ -128,14 +130,14 @@ export const FMS_Init = (props: Init_Props) =>
 
             
             <h2 style={{top: row5Y + "%"}}>CRZ FL</h2>    
-            <Input disabled onChange={(value) => props.dataManager.trySetCruiseFlightLevel(value)} characterLimit={5} className="medium-input" posX={18.5} posY={row5Y} type="text"></Input>
+            <Input disabled onChange={(value) => trySetCruiseFlightLevel(value)} characterLimit={5} className="medium-input" posX={18.5} posY={row5Y} type="text"></Input>
             <h2 style={{top: row5Y + "%", right: "38%"}}>CRZ TEMP</h2>    
-            <Input disabled onChange={(value) => props.dataManager.trySetCruiseTemp(value)} characterLimit={4} className="medium-input" posX={64} posY={row5Y} type="text"></Input>
+            <Input disabled onChange={(value) => trySetCruiseTemp(value)} characterLimit={4} className="medium-input" posX={64} posY={row5Y} type="text"></Input>
 
             <h2 style={{top: row6Y + "%"}}>MODE</h2>    
-            <Dropdown className="mode-dropdown" innerColor="$grey" offsetX={18.5} offseY={row6Y} type={DropdownType.system_select} onSelect={(index) => props.dataManager.trySetClimbMode(index)} items={["ECON", "LRC"]}></Dropdown>
+            <Dropdown defaultIndex={0} className="mode-dropdown" innerColor="$grey" offsetX={18.5} offseY={row6Y} type={DropdownType.system_select} onSelect={(index) => props.dataManager.trySetClimbMode(index)} items={["ECON", "LRC"]}></Dropdown>
             <h2 style={{top: row6Y + "%", right: "38%"}}>TROPO</h2>    
-            <Input onChange={(value) => props.dataManager.trySetTropo(value)} characterLimit={5} value={36090} className="less-large-input" posX={64} posY={row6Y} type="text"></Input>
+            <Input onChange={(value) => trySetTropo(value)} characterLimit={5} value={36090} className="less-large-input" posX={64} posY={row6Y} type="text"></Input>
 
 
             <h2 style={{top: row7Y + "%"}}>CI</h2>
@@ -148,13 +150,24 @@ export const FMS_Init = (props: Init_Props) =>
             <div style={{top: "63%"}} className="pagesplitter"></div>
  
             <Button className="medium-button" posX={18.5} posY={67}>IRS</Button>
-            <Button disabled className="medium-button" posX={18.5} posY={75}>DEPARTURE</Button>
+            <Button onClick={() => props.selectPage("ACTIVE/F-PLN/DEPARTURE")} disabled={!props.stateManager.flightPlanManager.getOrigin()} className="medium-button" posX={18.5} posY={75}>DEPARTURE</Button>
             <Button className="large-button" posX={48} posY={75}>RTE SUMMARY</Button>
 
             <Button className="medium-button" posX={18.5} posY={83}>NAVAIDS</Button>
             <Button className="medium-button" posX={18.5} posY={91}>FUEL&LOAD</Button>
-
-            <Button className="small-tall-button" posX={0} posY={100}>CLEAR<br/>Info</Button>
+            <Button className="medium-button" posX={18.5} posY={99}>T.O PERF</Button>
         </div>
     );
+    
+    function trySetCruiseTemp(value: string): any {
+        throw new Error("Function not implemented.");
+    }
+    function trySetCruiseFlightLevel(value: string): any {
+        throw new Error("Function not implemented.");
+    }
+    function trySetTropo(value: string): any {
+        throw new Error("Function not implemented.");
+    }
 }
+
+
