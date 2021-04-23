@@ -55,6 +55,8 @@ export class Dropdown extends React.Component<DropdownProps>
         this.toggleOpen();
     }
     render(){
+        if(this.props.disabled)
+            this.state.open = false;
         if(!this.state.open)
         { 
             switch(this.props.type)
