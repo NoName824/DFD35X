@@ -205,11 +205,11 @@ export const FMS_Arrival = (props: Arrival_Props) =>
                 <h3 style={{left: "83%", top: "80%"}} className="deparr-info-text">{trans == '' ? star == '' ? '------' : 'NONE' : trans}</h3>
             </div>
 
-            <Dropdown disabled={airport == ''} height={"5%"} width="20%" offsetX={0} offseY={42} label="RWY" onSelect={(index: number) => selectRunway(index)} type={DropdownType.general} items={getRunways()}/>
-            <Dropdown disabled={airport == ''} height={"5%"} width="20%" offsetX={20} offseY={42} label="APPR" onSelect={(index: number) => selectApproach(index)} type={DropdownType.general} items={getApproaches()}/>
-            <Dropdown noneOption disabled={approach == '' || getVias().length == 0} height={"5%"} width="20%" offsetX={40} offseY={42} label="VIA" onSelect={(index: number) => selectVIA(index)} type={DropdownType.general} items={getVias()}/>
-            <Dropdown noneOption disabled={approach == ''} height={"5%"} width="20%" offsetX={60} offseY={42} label="STAR" onSelect={(index: number) => selectSTAR(index)} type={DropdownType.general} items={getSTARs().map(a => a.name)}/>
-            <Dropdown noneOption disabled={star == '' || getTransitions().length == 0} height={"5%"} width="20%" offsetX={80} offseY={42} label="TRANS" onSelect={(index: number) => selectTransition(index)} type={DropdownType.general} items={getTransitions()}/>
+            <Dropdown disabled={airport == ''} height={"5%"} width="20%" offsetX={0} offsetY={42} label="RWY" onSelect={(index: number) => selectRunway(index)} type={DropdownType.general} items={getRunways()}/>
+            <Dropdown disabled={airport == ''} height={"5%"} width="20%" offsetX={20} offsetY={42} label="APPR" onSelect={(index: number) => selectApproach(index)} type={DropdownType.general} items={getApproaches()}/>
+            <Dropdown noneOption disabled={approach == '' || getVias().length == 0} height={"5%"} width="20%" offsetX={40} offsetY={42} label="VIA" onSelect={(index: number) => selectVIA(index)} type={DropdownType.general} items={getVias()}/>
+            <Dropdown noneOption disabled={approach == ''} height={"5%"} width="20%" offsetX={60} offsetY={42} label="STAR" onSelect={(index: number) => selectSTAR(index)} type={DropdownType.general} items={getSTARs().map(a => a.name)}/>
+            <Dropdown noneOption disabled={star == '' || getTransitions().length == 0} height={"5%"} width="20%" offsetX={80} offsetY={42} label="TRANS" onSelect={(index: number) => selectTransition(index)} type={DropdownType.general} items={getTransitions()}/>
         </div>
     );
 }

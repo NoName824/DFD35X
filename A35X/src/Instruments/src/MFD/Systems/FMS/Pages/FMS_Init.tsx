@@ -133,7 +133,7 @@ export const FMS_Init = (props: Init_Props) =>
             <Input disabled onChange={(value) => trySetCruiseTemp(value)} characterLimit={4} className="medium-input" posX={64} posY={row5Y} type="text"></Input>
 
             <h2 style={{top: row6Y + "%"}}>MODE</h2>    
-            <Dropdown defaultIndex={0} className="mode-dropdown" innerColor="$grey" offsetX={18.5} offseY={row6Y} type={DropdownType.system_select} onSelect={(index) => props.dataManager.trySetClimbMode(index)} items={["ECON", "LRC"]}></Dropdown>
+            <Dropdown defaultIndex={0} className="mode-dropdown" innerColor="$grey" offsetX={18.5} offsetY={row6Y} type={DropdownType.system_select} onSelect={(index) => props.dataManager.trySetClimbMode(index)} items={["ECON", "LRC"]}></Dropdown>
             <h2 style={{top: row6Y + "%", right: "38%"}}>TROPO</h2>    
             <Input onChange={(value) => trySetTropo(value)} characterLimit={5} value={36090} className="less-large-input" posX={64} posY={row6Y} type="text"></Input>
 

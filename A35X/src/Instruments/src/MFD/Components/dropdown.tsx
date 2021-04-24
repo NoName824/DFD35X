@@ -14,7 +14,7 @@ type DropdownProps =
     type: DropdownType;
     onSelect: (index: number) => void;
     offsetX?: number;
-    offseY?: number;
+    offsetY?: number;
     disabled?: boolean,
     innerColor?: string,
     className?: string,
@@ -64,14 +64,14 @@ export class Dropdown extends React.Component<DropdownProps>
             {
                 case(DropdownType.system_select):
                     return(
-                            <Button disabled={this.props.disabled} textColor="cyan" posX={this.props.offsetX} posY={this.props.offseY} onClick={() => this.toggleOpen()} className={"bck-grey dropdown-system-body " + this.props.className}>
+                            <Button disabled={this.props.disabled} textColor="cyan" posX={this.props.offsetX} posY={this.props.offsetY} onClick={() => this.toggleOpen()} className={"bck-grey dropdown-system-body " + this.props.className}>
                                 <div className="bck-black drop-top-inner" style={{backgroundColor: this.props.innerColor}}> {this.state.selected}</div>
                                 <img className="drop-arrow-system" src={DownArrow} alt=""/>
                             </Button>
                     );
                 case(DropdownType.general):
                     return(
-                            <Button height={this.props.height} width={this.props.width} disabled={this.props.disabled} posX={this.props.offsetX} posY={this.props.offseY} onClick={() => this.toggleOpen()} className="bck-grey dropdown-general-body">
+                            <Button height={this.props.height} width={this.props.width} disabled={this.props.disabled} posX={this.props.offsetX} posY={this.props.offsetY} onClick={() => this.toggleOpen()} className="bck-grey dropdown-general-body">
                                 {this.props.label ? this.props.label : this.state.selected}
                                 <img className="drop-arrow-general" src={DownArrow} alt=""/>
                             </Button>
@@ -90,7 +90,7 @@ export class Dropdown extends React.Component<DropdownProps>
             {
                 case(DropdownType.system_select):
                     return(
-                            <Button disabled={this.props.disabled} textColor="cyan" posX={this.props.offsetX} posY={this.props.offseY} onClick={() => this.toggleOpen()} className={"bck-grey dropdown-system-body " + this.props.className}>
+                            <Button disabled={this.props.disabled} textColor="cyan" posX={this.props.offsetX} posY={this.props.offsetY} onClick={() => this.toggleOpen()} className={"bck-grey dropdown-system-body " + this.props.className}>
                                 <div style={{backgroundColor: this.props.innerColor}} className="bck-black drop-top-inner"> 
                                     {this.state.selected}
                                 </div>
@@ -103,7 +103,7 @@ export class Dropdown extends React.Component<DropdownProps>
                     );
                 case(DropdownType.general):
                 return(
-                    <Button height={this.props.height} width={this.props.width} disabled={this.props.disabled} posX={this.props.offsetX} posY={this.props.offseY} onClick={() => this.toggleOpen()} className="bck-grey dropdown-general-body">
+                    <Button height={this.props.height} width={this.props.width} disabled={this.props.disabled} posX={this.props.offsetX} posY={this.props.offsetY} onClick={() => this.toggleOpen()} className="bck-grey dropdown-general-body">
                         {this.props.label ? this.props.label : this.state.selected}
                         <img className="drop-arrow-general" src={DownArrow} alt=""/>
                         <div style={{height: (item_elements.length * 22 - 2 + "px")}}className="bck-dark-grey frnt-grey

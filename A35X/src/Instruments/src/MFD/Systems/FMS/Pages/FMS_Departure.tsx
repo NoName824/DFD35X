@@ -145,10 +145,10 @@ export const FMS_Departure = (props: Departure_Props) =>
                 <h3 style={{left: "80%", top: "65%"}}>TRANS</h3>
                 <h3 style={{left: "80%", top: "80%"}} className="deparr-info-text">{trans == '' ? '------' : trans}</h3>
             </div>
-            <Dropdown disabled={airport == ''} height={"5%"} width="40%" offsetX={10} offseY={42} label="RWY" onSelect={(index: number) => selectRunway(index)} type={DropdownType.general} items={getRunways()}/>
+            <Dropdown disabled={airport == ''} height={"5%"} width="40%" offsetX={10} offsetY={42} label="RWY" onSelect={(index: number) => selectRunway(index)} type={DropdownType.general} items={getRunways()}/>
 
-            <Dropdown noneOption disabled={runway == ''} height={"5%"} width="20%" offsetX={55} offseY={42} label="SID" onSelect={(index: number) => selectSID(index)} type={DropdownType.general} items={getSIDs().map(a => a.name)}/>
-            <Dropdown noneOption disabled={sid == '' || getTransitions().length == 0} height={"5%"} width="20%" offsetX={78} offseY={42} label="TRANS" onSelect={(index: number) => selectTransition(index)} type={DropdownType.general} items={getTransitions()}/>
+            <Dropdown noneOption disabled={runway == ''} height={"5%"} width="20%" offsetX={55} offsetY={42} label="SID" onSelect={(index: number) => selectSID(index)} type={DropdownType.general} items={getSIDs().map(a => a.name)}/>
+            <Dropdown noneOption disabled={sid == '' || getTransitions().length == 0} height={"5%"} width="20%" offsetX={78} offsetY={42} label="TRANS" onSelect={(index: number) => selectTransition(index)} type={DropdownType.general} items={getTransitions()}/>
         </div>
     );
 }
