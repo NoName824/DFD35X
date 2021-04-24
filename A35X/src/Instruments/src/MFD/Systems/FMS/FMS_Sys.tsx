@@ -9,6 +9,7 @@ import { FMCDataManager } from '../../A35X_FMCDataManager'
 import { MFD_StateManager } from '../../MFD_StateManager'
 import { FMS_Fpln } from './Pages/FMS_Fpln'
 import { FMS_Departure } from './Pages/FMS_Departure'
+import { FMS_Arrival } from './Pages/FMS_Arrival'
 
 type FMS_Props =
 {
@@ -31,8 +32,11 @@ export const FMS_Sys =(props: FMS_Props) =>
                 return(<FMS_Fpln/>);
             case("ACTIVE/F-PLN/DEPARTURE"):
                 return(<FMS_Departure stateManager={props.stateManager}/>);
+            case("ACTIVE/F-PLN/ARRIVAL"):
+                return(<FMS_Arrival stateManager={props.stateManager}/>);
         }
     }
+    //Select Page within the ACTIVE dropdown
     function selectActivePage(index: number)
     {
         switch(index)
@@ -50,7 +54,7 @@ export const FMS_Sys =(props: FMS_Props) =>
                 setCurrentPage("ACTIVE/WIND");
                 break;
             case(4):
-            setCurrentPage("ACTIVE/INIT");
+                setCurrentPage("ACTIVE/INIT");
                 break;
         }
     }

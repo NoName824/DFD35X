@@ -18,6 +18,11 @@ export class MFD_StateManager
     SID: string;
     depTransition: string;
 
+    arrRunway: string;
+    STAR: string;
+    approach: string;
+    appTransition: string;
+    via: string;
 
     constructor(update:() => void, _flightPlanManager: FlightPlanManager)
     {
@@ -35,21 +40,50 @@ export class MFD_StateManager
         this.SID = '';
         this.depTransition = '';
         
+        this.arrRunway = '';
+        this.STAR = '';
+        this.approach = '';
+        this.appTransition = '';
+        this.via = '';
+
+        
         this.flightNumber = SimVar.GetSimVarValue("ATC FLIGHT NUMBER", "string");
         FlightPlanAsoboSync.LoadFromGame(this.flightPlanManager).then(() => {
             if(this.flightPlanManager.getOrigin() != undefined && this.flightPlanManager.getDestination() != undefined)
             {
                 this.origin = this.flightPlanManager.getOrigin().ident;
                 this.destination = this.flightPlanManager.getDestination().ident;
+
+
                 this.depRunway = this.flightPlanManager.getDepartureRunway().designation;
                 var depProc = this.flightPlanManager.getDeparture();
-                this.SID = depProc.name;
-                if(this.SID != '')
-                    this.depTransition = depProc.enRouteTransitions[this.flightPlanManager.getDepartureEnRouteTransitionIndex()].name;
+                if(depProc)
+                {
+                    this.SID = depProc.name;
+                    if(this.SID != '')
+                        this.depTransition = depProc.enRouteTransitions[this.flightPlanManager.getDepartureEnRouteTransitionIndex()].name;
+                }
                 
-                console.log("Dep Runway:" + this.depRunway);
-                console.log("Departure Procedure: " + this.SID);
-                console.log("Departure Transition: " + this.depTransition);
+                this.arrRunway = this.flightPlanManager.getApproachRunway().designation;
+                var arrProc = this.flightPlanManager.getArrival();
+                if(arrProc)
+                {
+                    this.STAR = arrProc.name;
+                    this.approach = this.flightPlanManager.getApproach().name;
+                    if(this.SID != '')
+                    {
+                        var trans = this.flightPlanManager.getApproach().transitions[this.flightPlanManager.getApproachTransitionIndex()]
+                        this.via = trans.waypoints[0].infos.icao.substr(7); 
+                        this.appTransition = arrProc.enRouteTransitions[this.flightPlanManager.getArrivalTransitionIndex()];
+                    }
+                }
+                
+                console.log("Arr Runway:" + this.arrRunway);
+                console.log("Arr Procedure: " + this.STAR);
+                console.log("Approach Procedure: " + this.approach);
+                console.log("Arr Transition: " + this.appTransition);
+                console.log("Via: " + this.via);
+
                 this.updateAll();
             }
         });
@@ -73,6 +107,12 @@ export class MFD_StateManager
     updateDestination(value: string)
     {
         this.destination = value;
+        this.alternate = '';
+        this.arrRunway = '';
+        this.approach = '';
+        this.STAR = '';
+        this.appTransition = '';
+        this.via = '';
         this.updateAll();  
     }
     updateAlternate(value: string)
@@ -98,9 +138,37 @@ export class MFD_StateManager
         this.depTransition = '';
         this.updateAll();
     }
-    updateTrans(value: string)
+    updateDepTrans(value: string)
     {
         this.depTransition = value;
+        this.updateAll();
+    }
+
+    updateArrRunway(value: string)
+    {
+        this.arrRunway = value;
+        this.updateAll();
+    }
+    updateSTAR(value: string)
+    {
+        this.STAR = value;
+        this.appTransition = '';
+        this.updateAll();
+    }
+    updateAppTrans(value: string)
+    {
+        this.appTransition = value;
+        this.updateAll();
+    }
+    updateApproach(value: string)
+    {
+        this.approach = value;
+        console.log("set approach to " + this.flightPlanManager.getApproach().name + " and "+  this.approach);
+        this.updateAll();
+    } 
+    updateVia(value: string)
+    {
+        this.via = value;
         this.updateAll();
     }
 }

@@ -21,7 +21,8 @@ type DropdownProps =
     label?: string,
     height?: string,
     width?: string,
-    defaultIndex?: number
+    defaultIndex?: number,
+    noneOption?: boolean,
 }
 
 export class Dropdown extends React.Component<DropdownProps>
@@ -50,7 +51,7 @@ export class Dropdown extends React.Component<DropdownProps>
         console.log("Item Index is " + index)
         this.props.onSelect(index);
         this.setState({
-            selected: this.props.items[index].toString()
+            selected: index > 0 ? this.props.items[index].toString() : "NONE"
         });
         this.toggleOpen();
     }
@@ -79,8 +80,10 @@ export class Dropdown extends React.Component<DropdownProps>
         }
         else{
             var item_elements: Array<JSX.Element> = [];
+            if(this.props.noneOption)
+                item_elements.push(<span style={{top: "8px"}} onClick={() => this.selectItem(-1)} className='drop-item'>NONE</span>)
             this.props.items.map((item, index) => (
-                item_elements.push(<span style={{top: (index * (100 / this.props.items.length) + 5   + "%")}} onClick={() => this.selectItem(index)} className='drop-item'>{item}</span>)
+                item_elements.push(<span style={{top: (index + (this.props.noneOption ? 1 : 0)) * 22 + 5 + "px"}} onClick={() => this.selectItem(index)} className='drop-item'>{item}</span>)
             ));           
                 
             switch(this.props.type)
@@ -92,7 +95,7 @@ export class Dropdown extends React.Component<DropdownProps>
                                     {this.state.selected}
                                 </div>
                                 <img className="drop-arrow-system" src={DownArrow} alt=""/>
-                                <div style={{height: (this.props.items.length * 80 + "%")}}className="bck-dark-grey frnt-white
+                                <div style={{height: (item_elements.length * 22 - 2 + "px")}}className="bck-dark-grey frnt-white
                                 drop-lower-body">                        
                                     {item_elements}
                                 </div>
@@ -103,7 +106,7 @@ export class Dropdown extends React.Component<DropdownProps>
                     <Button height={this.props.height} width={this.props.width} disabled={this.props.disabled} posX={this.props.offsetX} posY={this.props.offseY} onClick={() => this.toggleOpen()} className="bck-grey dropdown-general-body">
                         {this.props.label ? this.props.label : this.state.selected}
                         <img className="drop-arrow-general" src={DownArrow} alt=""/>
-                        <div style={{height: (this.props.items.length * 80 + "%")}}className="bck-dark-grey frnt-grey
+                        <div style={{height: (item_elements.length * 22 - 2 + "px")}}className="bck-dark-grey frnt-grey
                         drop-lower-body">                         
                         {item_elements}
                     </div>

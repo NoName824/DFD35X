@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Dropdown, DropdownType } from "../../../Components/dropdown";
 import { MFD_StateManager } from "../../../MFD_StateManager";
-import './DepPage.scss'
+import './DepArrPages.scss'
 
 type Departure_Props ={
     stateManager: MFD_StateManager
@@ -52,7 +52,6 @@ export const FMS_Departure = (props: Departure_Props) =>
         
         var correctSids: any = [];
         var selectedrwy = runwayDesignatorUtil(props.stateManager.depRunway);
-        console.log("looking for SIDs with runway " + selectedrwy);
         for (let i = 0; i < sids.length; i++) {
             const element = sids[i];
             for (let j = 0; j < element.runwayTransitions.length; j++) {
@@ -60,18 +59,15 @@ export const FMS_Departure = (props: Departure_Props) =>
                 var transname = runwayDesignatorUtil(trans.name.slice(2));
                 if (transname == selectedrwy)
                 {
-                    console.log(`${element.name} does link with ${selectedrwy}`);
                     correctSids.push(element);
                     break;
                 }    
-                console.log(`${element.name} does not link with ${selectedrwy}`);            
             }    
         }
         return(correctSids);
     }
     function getTransitions(): string[]
     {   
-        console.log("Departure Index is " + props.stateManager.flightPlanManager.getDepartureProcIndex());
         if(props.stateManager.flightPlanManager.getDepartureProcIndex() > -1)
             return(props.stateManager.flightPlanManager.getDeparture().enRouteTransitions.map(a => a.name));
         return([""])
@@ -79,28 +75,39 @@ export const FMS_Departure = (props: Departure_Props) =>
     function selectRunway(index: number)
     {
         props.stateManager.flightPlanManager.setOriginRunwayIndex(index);
-        console.log("Selecting Runway " + props.stateManager.flightPlanManager.getOrigin().infos.oneWayRunways[index].designation);
         props.stateManager.flightPlanManager.setDepartureProcIndex(-1);
         props.stateManager.flightPlanManager.setDepartureEnRouteTransitionIndex(-1);
 
 
         props.stateManager.updateDepRunway(props.stateManager.flightPlanManager.getOrigin().infos.oneWayRunways[index].designation);
         props.stateManager.updateSID('');
-        props.stateManager.updateTrans('');
+        props.stateManager.updateDepTrans('');
     }
     function selectSID(index: number)
     {
+        props.stateManager.updateDepTrans('');
+        if(index < 0)
+        {
+            props.stateManager.flightPlanManager.setDepartureProcIndex(-1);
+            props.stateManager.flightPlanManager.setDepartureEnRouteTransitionIndex(-1);
+            props.stateManager.updateSID('');
+            return;
+        }
         var num = props.stateManager.flightPlanManager.getOrigin().infos.departures.indexOf(getSIDs()[index])
         props.stateManager.flightPlanManager.setDepartureProcIndex(num);
         props.stateManager.flightPlanManager.setDepartureEnRouteTransitionIndex(-1);
-
         props.stateManager.updateSID(props.stateManager.flightPlanManager.getDeparture().name);
-        props.stateManager.updateTrans('');
     }
     function selectTransition(index: number)
     {
+        if(index < 0)
+        {
+            props.stateManager.flightPlanManager.setDepartureEnRouteTransitionIndex(-1);
+            props.stateManager.updateDepTrans('');
+            return;
+        }
         props.stateManager.flightPlanManager.setDepartureEnRouteTransitionIndex(index);
-        props.stateManager.updateTrans(props.stateManager.flightPlanManager.getDeparture().enRouteTransitions[index].name)
+        props.stateManager.updateDepTrans(props.stateManager.flightPlanManager.getDeparture().enRouteTransitions[index].name)
     }
     function ILSInfo(): string
     {
@@ -115,33 +122,33 @@ export const FMS_Departure = (props: Departure_Props) =>
                 <h3 style={{left: "6%", top: "-6%", backgroundColor: "black"}}>SELECTED DEPARTURE</h3>
 
                 <h3 style={{left: "1%", top: "25%"}}>FROM</h3>
-                <h3 style={{left: "13%", top: "23.5%"}} className="dep-info-text">{airport} {ILSInfo()}</h3>
+                <h3 style={{left: "13%", top: "23.5%"}} className="deparr-info-text">{airport} {ILSInfo()}</h3>
 
                 <h3 style={{left: "50%", top: "10%"}}>RWY</h3>
-                <h3 style={{left: "50%", top: "30%"}} className="dep-info-text">{runway == '' ? '---' : runway}</h3>
+                <h3 style={{left: "50%", top: "30%"}} className="deparr-info-text">{runway == '' ? '---' : runway}</h3>
 
                 <h3 style={{left: "60%", top: "10%"}}>LENGTH</h3>
-                <h3 style={{left: "60%", top: "30%"}} className="dep-info-text">{(props.stateManager.flightPlanManager.getDepartureRunway() && airport != '') ? `${Math.round(props.stateManager.flightPlanManager.getDepartureRunway().length)}m` : '----'}</h3>
+                <h3 style={{left: "60%", top: "30%"}} className="deparr-info-text">{(props.stateManager.flightPlanManager.getDepartureRunway() && airport != '') ? `${Math.round(props.stateManager.flightPlanManager.getDepartureRunway().length)}m` : '----'}</h3>
 
                 <h3 style={{left: "85%", top: "10%"}}>CRS</h3>
-                <h3 style={{left: "85%", top: "30%"}} className="dep-info-text">{runway == '' ? '---' : Utils.leadingZeros(Math.round((props.stateManager.flightPlanManager.getDepartureRunway().direction)), 3)}</h3>
+                <h3 style={{left: "85%", top: "30%"}} className="deparr-info-text">{runway == '' ? '---' : Utils.leadingZeros(Math.round((props.stateManager.flightPlanManager.getDepartureRunway().direction)), 3)}</h3>
 
                 <h3 style={{left: "1%", top: "65%"}}>EOSID</h3>  
-                <h3 style={{left: "1%", top: "80%"}} className="dep-info-text">{runway == '' ? '------' : 'NONE'}</h3>
+                <h3 style={{left: "1%", top: "80%"}} className="deparr-info-text">{runway == '' ? '------' : 'NONE'}</h3>
 
                 <h3 style={{left: "25%", top: "65%"}}>FREQ/CHAN</h3>
-                <h3 style={{left: "25%", top: "80%"}} className="dep-info-text">{/*runway == '' ? '---.--' : String(props.stateManager.flightPlanManager.getDepartureRunway().primaryILSFrequency)*/}---.--</h3>
+                <h3 style={{left: "25%", top: "80%"}} className="deparr-info-text">{/*runway == '' ? '---.--' : String(props.stateManager.flightPlanManager.getDepartureRunway().primaryILSFrequency)*/}---.--</h3>
 
                 <h3 style={{left: "55%", top: "65%"}}>SID</h3>
-                <h3 style={{left: "55%", top: "80%"}} className="dep-info-text">{sid == '' ? '------' : sid}</h3>
+                <h3 style={{left: "55%", top: "80%"}} className="deparr-info-text">{sid == '' ? '------' : sid}</h3>
 
                 <h3 style={{left: "80%", top: "65%"}}>TRANS</h3>
-                <h3 style={{left: "80%", top: "80%"}} className="dep-info-text">{trans == '' ? '------' : trans}</h3>
+                <h3 style={{left: "80%", top: "80%"}} className="deparr-info-text">{trans == '' ? '------' : trans}</h3>
             </div>
             <Dropdown disabled={airport == ''} height={"5%"} width="40%" offsetX={10} offseY={42} label="RWY" onSelect={(index: number) => selectRunway(index)} type={DropdownType.general} items={getRunways()}/>
 
-            <Dropdown disabled={runway == ''} height={"5%"} width="20%" offsetX={55} offseY={42} label="SID" onSelect={(index: number) => selectSID(index)} type={DropdownType.general} items={getSIDs().map(a => a.name)}/>
-            <Dropdown disabled={sid == '' || getTransitions().length == 0} height={"5%"} width="20%" offsetX={78} offseY={42} label="TRANS" onSelect={(index: number) => selectTransition(index)} type={DropdownType.general} items={getTransitions()}/>
+            <Dropdown noneOption disabled={runway == ''} height={"5%"} width="20%" offsetX={55} offseY={42} label="SID" onSelect={(index: number) => selectSID(index)} type={DropdownType.general} items={getSIDs().map(a => a.name)}/>
+            <Dropdown noneOption disabled={sid == '' || getTransitions().length == 0} height={"5%"} width="20%" offsetX={78} offseY={42} label="TRANS" onSelect={(index: number) => selectTransition(index)} type={DropdownType.general} items={getTransitions()}/>
         </div>
     );
 }
