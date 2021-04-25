@@ -5,7 +5,8 @@ Welcome to the A35X project repository. Thank you for your interest in contribut
 
 ## Required Software
 
-[git](https://git-scm.com/downloads)
+[git](https://git-scm.com/downloads)    
+[node.js](https://nodejs.org/en/)
 
 ## Optional
 
