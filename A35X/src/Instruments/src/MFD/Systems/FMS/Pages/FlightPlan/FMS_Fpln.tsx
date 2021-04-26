@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Dropdown, DropdownType } from "../../../Components/dropdown";
+import { Dropdown, DropdownType } from "../../../../Components/dropdown";
 import './Fpln.scss'
-import { WaypointData } from '../../../Components/WaypointData'
-import { MFD_StateManager } from "../../../MFD_StateManager";
+import { WaypointData } from '../../../../Components/WaypointData'
+import { MFD_StateManager } from "../../../../MFD_StateManager";
 import { FMS_Departure } from "./FMS_Departure";
 import { FMS_Arrival } from "./FMS_Arrival";
-import { FMCDataManager } from "../../../A35X_FMCDataManager";
-import { Button } from "../../../Components/button";
+import { FMCDataManager } from "../../../../A35X_FMCDataManager";
+import { Button } from "../../../../Components/button";
 
+import UpArrows from '../../../../Assets/UpScrollArrow.svg'
+import DownArrows from '../../../../Assets/DownScrollArrow.svg'
 type Fpln_Props =
 {
     stateManager: MFD_StateManager,
@@ -20,6 +22,7 @@ export const FMS_Fpln = (props: Fpln_Props ) =>
 
     //REMOVE THIS IF OTHER STATE OBJECTS APPEAR
     const [update, setUpdate] = useState(false);
+
 
     const [didLoad, setDidLoad] = useState(false);
     
@@ -42,8 +45,7 @@ export const FMS_Fpln = (props: Fpln_Props ) =>
         }
         else
         {
-            if(scrollPosition > Math.min(numWaypoints, 9) - 9)
-                setScrollPosition(scrollPosition - 1);
+            setScrollPosition(Math.max(0, Math.min(scrollPosition - 1, 10000)));               
         }
     }
 
@@ -68,16 +70,26 @@ export const FMS_Fpln = (props: Fpln_Props ) =>
     function isNumeric(n) {
         return !isNaN(parseFloat(n)) && isFinite(n);
     }
+    function isRunwayWaypoint(name: string): boolean
+    {
+        if(name.substr(0, 2) == "RW")
+            if(/^\d+$/.test(name.substr(2,2)))
+                return true
+        return false
+    }
+
     function getWaypoints()
     {
         var item_elements: Array<JSX.Element> = [];
         var waypoints: any[] = [];
         props.stateManager.flightPlanManager.getAllWaypoints().map((item, index) =>
         {
-            if(index != 1)
+            if(!isRunwayWaypoint(item.ident))
                 waypoints.push(item);
         });
         for (let index = scrollPosition; index < waypoints.length; index++) {
+            if(index > scrollPosition + 8)
+                break;
             const element = waypoints[index];
             var waypointName = element.ident;
             if(index == 0)
@@ -88,11 +100,13 @@ export const FMS_Fpln = (props: Fpln_Props ) =>
             {
                 waypointName += FMCDataManager.runwayDesignatorUtil(props.stateManager.arrRunway);
             }
-            item_elements.push(<WaypointData afterLeg waypointIdent={waypointName} timePrediction={"08:90"} top={(index - scrollPosition) * 9 + 7 + "%"}left="0" speedPred="NAN" altitudePred="NAN" />)           
+            item_elements.push(<WaypointData onClick={() => openRevisionMenu(element.ident)} showIcon={index != 0} preLeg afterLeg={index != waypoints.length -1} waypointIdent={waypointName} timePrediction={element.estimatedTimeOfArrivalFP} top={(index - scrollPosition) * 9 + 7 + "%"}left="0" speedPred={".."} altitudePred={element.altitudeinFP} />)           
         }
         return(item_elements);
     }
-    
+    function openRevisionMenu(waypointName: string)
+    {
+    }
     switch(props.page)
     {
         case("DEPARTURE"):
@@ -112,10 +126,9 @@ export const FMS_Fpln = (props: Fpln_Props ) =>
                 {getWaypoints()}
             </div>
             <div style={{height: "10%"}} className="fpln-body">
-                <Button posY={87} height="40px" width="100px" onClick={() => props.selectPage("ACTIVE/F-PLN/ARRIVAl")}>{props.stateManager.origin}</Button>
-
-                <Button posY={87} posX={72} height="50px" width="50px" onClick={() => scroll(true)}><img src="" alt=""/></Button>
-                <Button posY={87} posX={80} height="50px" width="50px" onClick={() => scroll(false)}><img src="" alt=""/></Button>
+                <Button posY={87} height="40px" width="100px" onClick={() => props.selectPage("ACTIVE/F-PLN/ARRIVAl")}>{props.stateManager.destination}</Button>
+                <Button posY={87} posX={72} height="50px" width="50px" onClick={() => scroll(true)}><img className="scroll-arrow" src={DownArrows} alt=""/></Button>
+                <Button posY={87} posX={80} height="50px" width="50px" onClick={() => scroll(false)}><img className="scroll-arrow" src={UpArrows} alt=""/></Button>
             </div>
         </div>
     );

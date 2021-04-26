@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { FMCDataManager } from "../../../A35X_FMCDataManager";
-import { Dropdown, DropdownType } from "../../../Components/dropdown";
-import { MFD_StateManager } from "../../../MFD_StateManager";
+import { FMCDataManager } from "../../../../A35X_FMCDataManager";
+import { Dropdown, DropdownType } from "../../../../Components/dropdown";
+import { MFD_StateManager } from "../../../../MFD_StateManager";
 import './DepArrPages.scss'
 
 type Departure_Props ={

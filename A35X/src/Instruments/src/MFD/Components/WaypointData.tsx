@@ -7,7 +7,7 @@ import NoLegWaypoint from "../Assets/NoLegWaypoint.svg";
 
 type Waypoint_Props =
 {
-    onClick?: void,
+    onClick?: (e?: any) => any,
 
     top?: string,
     left?: string,
@@ -21,14 +21,16 @@ type Waypoint_Props =
     efob?: string,
     trueWindPred?: string,
     
+    showIcon: boolean
     preLeg?: boolean,
     afterLeg?: boolean,
 }
-
 export const WaypointData = (props: Waypoint_Props) =>
 {
     function getWaypointSvg() : string
     {
+        if(!props.showIcon)
+            return "";
         if(props.preLeg && props.afterLeg)
             return FullWaypoint;
         else if(props.preLeg)
@@ -40,7 +42,7 @@ export const WaypointData = (props: Waypoint_Props) =>
     }
     return(
         <div style={{top: props.top, left: props.left}} className="waypoint-info">
-            <h1 onClick={() => props.onClick} className={"fpln-waypoint-ident"}>{props.waypointIdent}</h1>
+            <h1 onClick={props.onClick} className={"fpln-waypoint-ident"}>{props.waypointIdent}</h1>
 
             <h2 className={"fpln-waypoint-time-pred"}>{props.timePrediction}</h2>
 

@@ -7,9 +7,9 @@ import {FMS_Perf} from './Pages/FMS_Perf'
 import { FlightPlanManager } from '../../../flightplanning/FlightPlanManager'
 import { FMCDataManager } from '../../A35X_FMCDataManager'
 import { MFD_StateManager } from '../../MFD_StateManager'
-import { FMS_Fpln } from './Pages/FMS_Fpln'
-import { FMS_Departure } from './Pages/FMS_Departure'
-import { FMS_Arrival } from './Pages/FMS_Arrival'
+import { FMS_Fpln } from './Pages/FlightPlan/FMS_Fpln'
+import { FMS_Departure } from './Pages/FlightPlan/FMS_Departure'
+import { FMS_Arrival } from './Pages/FlightPlan/FMS_Arrival'
 
 type FMS_Props =
 {
