@@ -5,6 +5,16 @@ export class FMCDataManager {
     constructor(fPManager) {
         this.flightPlanManager = fPManager;
     }
+    static runwayDesignatorUtil(value: string): string
+    {
+        var regExp = /[a-zA-Z]/g;      
+        if(value.length == 1 || (regExp.test(value) && value.length == 2))
+        {
+            return "0" + value;
+        }
+        else
+            return value;
+    }
     IsValidLatLon(latLong) {
         if (latLong[0] === "N" || latLong[0] === "S") {
             if (isFinite(parseInt(latLong.substr(1, 2)))) {

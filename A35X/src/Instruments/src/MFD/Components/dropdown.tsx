@@ -51,7 +51,7 @@ export class Dropdown extends React.Component<DropdownProps>
         console.log("Item Index is " + index)
         this.props.onSelect(index);
         this.setState({
-            selected: index > 0 ? this.props.items[index].toString() : "NONE"
+            selected: index >= 0 ? this.props.items[index].toString() : "NONE"
         });
         this.toggleOpen();
     }

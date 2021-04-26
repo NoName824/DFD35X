@@ -22,19 +22,12 @@ export const FMS_Sys =(props: FMS_Props) =>
     
     function getPage()
     {
-        switch(currentPage)
-        {
-            case("ACTIVE/INIT"):
+        if(currentPage.includes("ACTIVE/INIT"))
                 return(<FMS_Init selectPage={(value: string) => setCurrentPage(value)} stateManager={props.stateManager} dataManager={props.dataManager}/>);
-            case("ACTIVE/PERF"):
+        else if(currentPage.includes("ACTIVE/PERF"))
                 return(<FMS_Perf/>);
-            case("ACTIVE/F-PLN"):
-                return(<FMS_Fpln/>);
-            case("ACTIVE/F-PLN/DEPARTURE"):
-                return(<FMS_Departure stateManager={props.stateManager}/>);
-            case("ACTIVE/F-PLN/ARRIVAL"):
-                return(<FMS_Arrival stateManager={props.stateManager}/>);
-        }
+        else if(currentPage.includes("ACTIVE/F-PLN"))
+                return(<FMS_Fpln selectPage={(value: string) => setCurrentPage(value)} page={currentPage.substr(13, currentPage.length - 13)} stateManager={props.stateManager}/>);
     }
     //Select Page within the ACTIVE dropdown
     function selectActivePage(index: number)

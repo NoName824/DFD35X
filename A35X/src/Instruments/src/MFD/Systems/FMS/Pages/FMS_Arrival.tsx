@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { FMCDataManager } from "../../../A35X_FMCDataManager";
 import { Dropdown, DropdownType } from "../../../Components/dropdown";
 import { MFD_StateManager } from "../../../MFD_StateManager";
 import './DepArrPages.scss'
@@ -27,19 +28,9 @@ export const FMS_Arrival = (props: Arrival_Props) =>
             onUpdate();
         }
     });
-    function runwayDesignatorUtil(value: string): string
-    {
-        var regExp = /[a-zA-Z]/g;      
-        if(value.length == 1 || (regExp.test(value) && value.length == 2))
-        {
-            return "0" + value;
-        }
-        else
-            return value;
-    }
     function onUpdate() {
         setAirport(props.stateManager.destination);
-        setRunway(runwayDesignatorUtil(props.stateManager.arrRunway))
+        setRunway(FMCDataManager.runwayDesignatorUtil(props.stateManager.arrRunway))
         setStar(props.stateManager.STAR);
         setTrans(props.stateManager.appTransition);
         setApproach(props.stateManager.approach);
@@ -47,7 +38,7 @@ export const FMS_Arrival = (props: Arrival_Props) =>
     }
     function getRunways(): string[]
     {
-        return(props.stateManager.flightPlanManager.getDestination().infos.oneWayRunways.map(a => `${runwayDesignatorUtil(a.designation)} ${Math.round(a.length)}M`));
+        return(props.stateManager.flightPlanManager.getDestination().infos.oneWayRunways.map(a => `${FMCDataManager.runwayDesignatorUtil(a.designation)} ${Math.round(a.length)}M`));
     }
     function getSTARs(): any[]
     {
@@ -56,20 +47,16 @@ export const FMS_Arrival = (props: Arrival_Props) =>
         var stars = props.stateManager.flightPlanManager.getDestination().infos.arrivals;
         
         var correctStars: any = [];
-        var selectedrwy = runwayDesignatorUtil(props.stateManager.arrRunway);
-        console.log("looking through " + stars.length + " STARs for runway " + selectedrwy);
+        var selectedrwy = FMCDataManager.runwayDesignatorUtil(props.stateManager.arrRunway);
         for (let i = 0; i < stars.length; i++) {
             const element = stars[i];
-            console.log(`Checking if ${element.name} connects to ${selectedrwy} with ${element.runwayTransitions.length} transitions`);   
             if(element.runwayTransitions.length)
             {         
                 for (let j = 0; j < element.runwayTransitions.length; j++) {
                     const trans = element.runwayTransitions[j];
-                    var transname = runwayDesignatorUtil(trans.name.slice(2));
-                    console.log(`Checking if ${transname} connects to ${selectedrwy}`);            
+                    var transname = FMCDataManager.runwayDesignatorUtil(trans.name.slice(2));
                     if (transname == selectedrwy)
                     {
-                        console.log(`${element.name} does link with ${selectedrwy}`);
                         correctStars.push(element);
                         break;
                     }    
@@ -100,13 +87,10 @@ export const FMS_Arrival = (props: Arrival_Props) =>
         if(props.stateManager.flightPlanManager.getApproachIndex() > -1)
         {
             var transitions = props.stateManager.flightPlanManager.getApproach().transitions;
-            console.log("Number of Approach transitions: " + transitions.length);
             var vias: string[] = [];
             transitions.forEach(element => {
-                console.log("Found a via" + element.legs[0].fixIcao.substr(element.legs[0].fixIcao.length - 5));
                 vias.push(element.legs[0].fixIcao.substr(element.legs[0].fixIcao.length - 5));
             });
-            console.log("Number of Approach vias: " + transitions.length);
             return(vias);
         }
         return([])

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { FMCDataManager } from "../../../A35X_FMCDataManager";
 import { Dropdown, DropdownType } from "../../../Components/dropdown";
 import { MFD_StateManager } from "../../../MFD_StateManager";
 import './DepArrPages.scss'
@@ -24,25 +25,16 @@ export const FMS_Departure = (props: Departure_Props) =>
             onUpdate();
         }
     });
-    function runwayDesignatorUtil(value: string): string
-    {
-        var regExp = /[a-zA-Z]/g;      
-        if(value.length == 1 || (regExp.test(value) && value.length == 2))
-        {
-            return "0" + value;
-        }
-        else
-            return value;
-    }
+
     function onUpdate() {
         setAirport(props.stateManager.origin);
-        setRunway(runwayDesignatorUtil(props.stateManager.depRunway))
+        setRunway(FMCDataManager.runwayDesignatorUtil(props.stateManager.depRunway))
         setSid(props.stateManager.SID);
         setTrans(props.stateManager.depTransition);
     }
     function getRunways(): string[]
     {
-        return(props.stateManager.flightPlanManager.getOrigin().infos.oneWayRunways.map(a => `${runwayDesignatorUtil(a.designation)} ${Math.round(a.length)}M ILS`));
+        return(props.stateManager.flightPlanManager.getOrigin().infos.oneWayRunways.map(a => `${FMCDataManager.runwayDesignatorUtil(a.designation)} ${Math.round(a.length)}M ILS`));
     }
     function getSIDs(): any[]
     {
@@ -51,12 +43,12 @@ export const FMS_Departure = (props: Departure_Props) =>
         var sids = props.stateManager.flightPlanManager.getOrigin().infos.departures;
         
         var correctSids: any = [];
-        var selectedrwy = runwayDesignatorUtil(props.stateManager.depRunway);
+        var selectedrwy = FMCDataManager.runwayDesignatorUtil(props.stateManager.depRunway);
         for (let i = 0; i < sids.length; i++) {
             const element = sids[i];
             for (let j = 0; j < element.runwayTransitions.length; j++) {
                 const trans = element.runwayTransitions[j];
-                var transname = runwayDesignatorUtil(trans.name.slice(2));
+                var transname = FMCDataManager.runwayDesignatorUtil(trans.name.slice(2));
                 if (transname == selectedrwy)
                 {
                     correctSids.push(element);
@@ -74,12 +66,13 @@ export const FMS_Departure = (props: Departure_Props) =>
     }
     function selectRunway(index: number)
     {
-        props.stateManager.flightPlanManager.setOriginRunwayIndex(index);
+        props.stateManager.flightPlanManager.setOriginRunwayIndex(index).then(() => {
+            props.stateManager.updateDepRunway(props.stateManager.flightPlanManager.getOrigin().infos.oneWayRunways[index].designation);
+        });
         props.stateManager.flightPlanManager.setDepartureProcIndex(-1);
         props.stateManager.flightPlanManager.setDepartureEnRouteTransitionIndex(-1);
 
 
-        props.stateManager.updateDepRunway(props.stateManager.flightPlanManager.getOrigin().infos.oneWayRunways[index].designation);
         props.stateManager.updateSID('');
         props.stateManager.updateDepTrans('');
     }
@@ -94,9 +87,12 @@ export const FMS_Departure = (props: Departure_Props) =>
             return;
         }
         var num = props.stateManager.flightPlanManager.getOrigin().infos.departures.indexOf(getSIDs()[index])
-        props.stateManager.flightPlanManager.setDepartureProcIndex(num);
+        props.stateManager.flightPlanManager.setDepartureProcIndex(num).then(() =>
+        {
+            props.stateManager.updateSID(props.stateManager.flightPlanManager.getDeparture().name);
+            props.stateManager.flightPlanManager.setDepartureRunwayIndex(props.stateManager.flightPlanManager.getOriginRunwayIndex());
+        });
         props.stateManager.flightPlanManager.setDepartureEnRouteTransitionIndex(-1);
-        props.stateManager.updateSID(props.stateManager.flightPlanManager.getDeparture().name);
     }
     function selectTransition(index: number)
     {
@@ -106,8 +102,9 @@ export const FMS_Departure = (props: Departure_Props) =>
             props.stateManager.updateDepTrans('');
             return;
         }
-        props.stateManager.flightPlanManager.setDepartureEnRouteTransitionIndex(index);
-        props.stateManager.updateDepTrans(props.stateManager.flightPlanManager.getDeparture().enRouteTransitions[index].name)
+        props.stateManager.flightPlanManager.setDepartureEnRouteTransitionIndex(index).then(()=>{
+            props.stateManager.updateDepTrans(props.stateManager.flightPlanManager.getDeparture().enRouteTransitions[props.stateManager.flightPlanManager.getDepartureEnRouteTransitionIndex()].name)
+        });
     }
     function ILSInfo(): string
     {

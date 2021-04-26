@@ -54,7 +54,7 @@ export class MFD_StateManager
                 this.origin = this.flightPlanManager.getOrigin().ident;
                 this.destination = this.flightPlanManager.getDestination().ident;
 
-
+                
                 this.depRunway = this.flightPlanManager.getDepartureRunway().designation;
                 var depProc = this.flightPlanManager.getDeparture();
                 if(depProc)
@@ -77,12 +77,7 @@ export class MFD_StateManager
                         this.appTransition = arrProc.enRouteTransitions[this.flightPlanManager.getArrivalTransitionIndex()];
                     }
                 }
-                
-                console.log("Arr Runway:" + this.arrRunway);
-                console.log("Arr Procedure: " + this.STAR);
-                console.log("Approach Procedure: " + this.approach);
-                console.log("Arr Transition: " + this.appTransition);
-                console.log("Via: " + this.via);
+
 
                 this.updateAll();
             }
@@ -163,7 +158,6 @@ export class MFD_StateManager
     updateApproach(value: string)
     {
         this.approach = value;
-        console.log("set approach to " + this.flightPlanManager.getApproach().name + " and "+  this.approach);
         this.updateAll();
     } 
     updateVia(value: string)
