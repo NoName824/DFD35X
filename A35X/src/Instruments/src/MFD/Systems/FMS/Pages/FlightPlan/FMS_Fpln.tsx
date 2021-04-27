@@ -10,11 +10,21 @@ import { Button } from "../../../../Components/button";
 
 import UpArrows from '../../../../Assets/UpScrollArrow.svg'
 import DownArrows from '../../../../Assets/DownScrollArrow.svg'
+import { FMS_Waypoint_Rev } from "./Windows/FMS_Waypoint_Rev";
+import { FMS_New_Dest } from "./Windows/FMS_New_Dest";
+import { FMS_Next_Waypoint } from "./Windows/FMS_Next_Waypoint";
 type Fpln_Props =
 {
     stateManager: MFD_StateManager,
     page: string,
     selectPage: (value: string) => void,
+}
+export enum FplnWindowType 
+{
+    none,
+    waypointRevisions,
+    nextWaypoint,
+    newDest,  
 }
 export const FMS_Fpln = (props: Fpln_Props ) =>
 {
@@ -22,6 +32,8 @@ export const FMS_Fpln = (props: Fpln_Props ) =>
 
     //REMOVE THIS IF OTHER STATE OBJECTS APPEAR
     const [update, setUpdate] = useState(false);
+    const [selectedWaypoint, selectWaypoint] = useState(String);
+    const [currentWindow, setCurrentWindow] = useState<FplnWindowType>(FplnWindowType.none);
 
 
     const [didLoad, setDidLoad] = useState(false);
@@ -100,12 +112,28 @@ export const FMS_Fpln = (props: Fpln_Props ) =>
             {
                 waypointName += FMCDataManager.runwayDesignatorUtil(props.stateManager.arrRunway);
             }
-            item_elements.push(<WaypointData onClick={() => openRevisionMenu(element.ident)} showIcon={index != 0} preLeg afterLeg={index != waypoints.length -1} waypointIdent={waypointName} timePrediction={element.estimatedTimeOfArrivalFP} top={(index - scrollPosition) * 9 + 7 + "%"}left="0" speedPred={".."} altitudePred={element.altitudeinFP} />)           
+            item_elements.push(<WaypointData waypointSelected={element.ident == selectedWaypoint} onClick={() => openRevisionMenu(element.ident)} showIcon={index != 0} preLeg afterLeg={index != waypoints.length -1} waypointIdent={waypointName} timePrediction={element.estimatedTimeOfArrivalFP} top={(index - scrollPosition) * 9 + 7 + "%"}left="0" speedPred={".."} altitudePred={element.altitudeinFP} />)           
         }
         return(item_elements);
     }
     function openRevisionMenu(waypointName: string)
     {
+        console.log("Opened Waypoint Rev Menu for waypoint: " + waypointName);      
+        setCurrentWindow(FplnWindowType.waypointRevisions);
+        selectWaypoint(waypointName);
+    }
+    function getWindow()
+    {
+        switch(currentWindow)
+        {
+            case(FplnWindowType.newDest):
+                return(<FMS_New_Dest/>);
+            case(FplnWindowType.nextWaypoint):
+                return(<FMS_Next_Waypoint selectedWaypoint={selectedWaypoint}/>);
+            case(FplnWindowType.waypointRevisions):
+                return(<FMS_Waypoint_Rev waypointName={selectedWaypoint} deleteWaypoint={console.log("Delete Waypoint " + selectedWaypoint)} selectWindow={(window: FplnWindowType) => setCurrentWindow(window)} selectPage={(page: string) => props.selectPage(page)}/>);
+        }   
+        return('');
     }
     switch(props.page)
     {
@@ -124,6 +152,7 @@ export const FMS_Fpln = (props: Fpln_Props ) =>
             </div>          
             <div className="fpln-body">
                 {getWaypoints()}
+                {getWindow()}
             </div>
             <div style={{height: "10%"}} className="fpln-body">
                 <Button posY={87} height="40px" width="100px" onClick={() => props.selectPage("ACTIVE/F-PLN/ARRIVAl")}>{props.stateManager.destination}</Button>

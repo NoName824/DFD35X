@@ -24,6 +24,8 @@ type Waypoint_Props =
     showIcon: boolean
     preLeg?: boolean,
     afterLeg?: boolean,
+
+    waypointSelected?: boolean,
 }
 export const WaypointData = (props: Waypoint_Props) =>
 {
@@ -42,7 +44,7 @@ export const WaypointData = (props: Waypoint_Props) =>
     }
     return(
         <div style={{top: props.top, left: props.left}} className="waypoint-info">
-            <h1 onClick={props.onClick} className={"fpln-waypoint-ident"}>{props.waypointIdent}</h1>
+            <h1 onClick={props.onClick} className={(props.waypointSelected ? "bck-grey frnt-white " : "") + "fpln-waypoint-ident"}>{props.waypointIdent}</h1>
 
             <h2 className={"fpln-waypoint-time-pred"}>{props.timePrediction}</h2>
 

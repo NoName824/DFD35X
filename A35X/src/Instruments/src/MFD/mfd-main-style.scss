@@ -26,14 +26,6 @@ h3
 $grey:  #757575;
 $outline-black: rgb(10,10,10);
 $dark-grey: #404040;
-.bck-blue-grey
-{
-    background-color: #394a52;
-}
-.bck-grey
-{
-    background-color: $grey;
-}
 .frnt-grey
 {
     color: $grey;
@@ -41,6 +33,18 @@ $dark-grey: #404040;
 .frnt-white
 {
     color: white;
+}
+.frnt-dark-grey
+{
+    color: $dark-grey
+}
+.bck-blue-grey
+{
+    background-color: #394a52;
+}
+.bck-grey
+{
+    background-color: $grey;
 }
 .bck-dark-grey
 {
