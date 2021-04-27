@@ -18,7 +18,7 @@ type FMS_Props =
 }
 export const FMS_Sys =(props: FMS_Props) =>
 {
-    const [currentPage, setCurrentPage] = useState(String)
+    const [currentPage, setCurrentPage] = useState("ACTIVE/INIT")
     
     function getPage()
     {
