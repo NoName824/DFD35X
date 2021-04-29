@@ -1,7 +1,7 @@
 # WORK IN PROGRESS - INCOMPLETE GUIDE
 # Welcome
 
-Welcome to the A35X project repository. Thank you for your interest in contributing to the project. Full details and guidelines on how to ensure this project is managed well are included below.
+Welcome to the A35X project repository. Thank you for your interest in contributing to the project. Full details and guidelines on how to ensure this project is managed well are included below. **Also, please note that the 3d models used in this project are *closed source*. So if you commit any 3d models, they will not be merged as those will be done by the development team.**
 
 ## Required Software
 
