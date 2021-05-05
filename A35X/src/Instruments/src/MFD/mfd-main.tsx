@@ -1,4 +1,3 @@
-import ReactDOM from 'react-dom'
 import React, { useEffect, useState } from 'react'
 import './mfd-main-style.scss'
 import { Dropdown, DropdownType } from './Components/dropdown'
@@ -10,10 +9,7 @@ import { FCU_BKUP_Sys } from './Systems/FCU_BKUP_Sys'
 import {useInstrument, useUpdate} from "../Hooks/hooks"
 import {FlightPlanManager} from "../flightplanning/FlightPlanManager"
 import { render } from '../Hooks/index'
-import { ClimbMode } from './Systems/FMS/Pages/FMS_Init'
 import { FMCDataManager } from './A35X_FMCDataManager'
-import { useSimVar, useSimVarValue } from '../Hooks/simVars'
-import {FlightPlanAsoboSync} from '../flightplanning/FlightPlanAsoboSync'
 import { MFD_StateManager } from './MFD_StateManager'
 
 
