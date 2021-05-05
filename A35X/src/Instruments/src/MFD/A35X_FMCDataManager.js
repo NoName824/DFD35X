@@ -1,11 +1,11 @@
 import { FlightPlanManager } from "../flightplanning/FlightPlanManager";
 
 export class FMCDataManager {
-    flightPlanManager: FlightPlanManager
+    flightPlanManager;
     constructor(fPManager) {
         this.flightPlanManager = fPManager;
     }
-    static runwayDesignatorUtil(value: string): string
+    static runwayDesignatorUtil(value)
     {
         var regExp = /[a-zA-Z]/g;      
         if(value.length == 1 || (regExp.test(value) && value.length == 2))
