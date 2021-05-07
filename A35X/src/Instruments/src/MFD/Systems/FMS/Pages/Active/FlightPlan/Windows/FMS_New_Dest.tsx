@@ -1,6 +1,6 @@
 import React from "react";
 
-export const FMS_New_Dest = () =>
+export const Window = () =>
 {
     return(<div></div>);
 }

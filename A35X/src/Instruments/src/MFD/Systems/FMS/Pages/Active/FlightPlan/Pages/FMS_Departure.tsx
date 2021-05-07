@@ -1,20 +1,23 @@
 import React, { useEffect, useState } from "react";
-import { FMCDataManager } from "../../../../A35X_FMCDataManager";
-import { Dropdown, DropdownType } from "../../../../Components/dropdown";
-import { MFD_StateManager } from "../../../../MFD_StateManager";
+import { useHistory } from "react-router";
+import { FMCDataManager } from "../../../../../../A35X_FMCDataManager";
+import { Dropdown, DropdownType } from "../../../../../../Components/dropdown";
+import { MFD_StateManager } from "../../../../../../MFD_StateManager";
 import './DepArrPages.scss'
 
-type Departure_Props ={
+type Departure_Props = {
     stateManager: MFD_StateManager
 }
-export const FMS_Departure = (props: Departure_Props) =>
+export const Page = (props: Departure_Props) =>
 {
+    const history = useHistory();
     const [airport, setAirport] = useState(String);
     const [runway, setRunway] = useState(String);
     const [sid, setSid] = useState(String);
     const [trans, setTrans] = useState(String);
 
     const [didLoad, setDidLoad] = useState(false);
+
 
     useEffect(() => {
         if(!didLoad)
@@ -71,8 +74,6 @@ export const FMS_Departure = (props: Departure_Props) =>
         });
         props.stateManager.flightPlanManager.setDepartureProcIndex(-1);
         props.stateManager.flightPlanManager.setDepartureEnRouteTransitionIndex(-1);
-
-
         props.stateManager.updateSID('');
         props.stateManager.updateDepTrans('');
     }

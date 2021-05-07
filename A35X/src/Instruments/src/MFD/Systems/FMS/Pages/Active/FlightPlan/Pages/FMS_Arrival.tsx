@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { FMCDataManager } from "../../../../A35X_FMCDataManager";
-import { Dropdown, DropdownType } from "../../../../Components/dropdown";
-import { MFD_StateManager } from "../../../../MFD_StateManager";
+import { useHistory } from "react-router";
+import { FMCDataManager } from "../../../../../../A35X_FMCDataManager";
+import { Dropdown, DropdownType } from "../../../../../../Components/dropdown";
+import { MFD_StateManager } from "../../../../../../MFD_StateManager";
 import './DepArrPages.scss'
 
 type Arrival_Props ={
     stateManager: MFD_StateManager
 }
-export const FMS_Arrival = (props: Arrival_Props) =>
+export const Page = (props: Arrival_Props) =>
 {
+    const history = useHistory();
     const [airport, setAirport] = useState(String);
     const [runway, setRunway] = useState(String);
     const [star, setStar] = useState(String);
@@ -18,6 +20,8 @@ export const FMS_Arrival = (props: Arrival_Props) =>
 
 
     const [didLoad, setDidLoad] = useState(false);
+
+    console.log(history.location.pathname);
 
     useEffect(() => {
         if(!didLoad)
@@ -144,7 +148,6 @@ export const FMS_Arrival = (props: Arrival_Props) =>
         props.stateManager.flightPlanManager.setApproachTransitionIndex(index).then(()=>
             props.stateManager.updateVia(props.stateManager.flightPlanManager.getApproach().transitions[index].name)
         );
-
     }
     function LSInfo(): string
     {

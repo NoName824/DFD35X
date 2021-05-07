@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react"
 import React from 'react'
 import './FMS_init.scss'
-import {Input} from '../../../Components/input'
-import { Button } from '../../../Components/button';
-import {Dropdown, DropdownType} from '../../../Components/dropdown'
-import { FlightPlanManager } from '../../../../flightplanning/FlightPlanManager'
-import {FlightPlanAsoboSync} from '../../../../flightplanning/FlightPlanAsoboSync'
-import { FMCDataManager } from "../../../A35X_FMCDataManager";
-import { MFD_StateManager } from "../../../MFD_StateManager";
-import { useSimVar } from "../../../../Hooks/simVars";
+import {Input} from '../../../../Components/input'
+import { Button } from '../../../../Components/button';
+import {Dropdown, DropdownType} from '../../../../Components/dropdown'
+import { FMCDataManager } from "../../../../A35X_FMCDataManager";
+import { MFD_StateManager } from "../../../../MFD_StateManager";
+import { useSimVar } from "../../../../../Hooks/simVars";
+import { useHistory } from "react-router";
 export enum ClimbMode
 {
     Econ,
@@ -17,10 +16,11 @@ type Init_Props =
 {
     dataManager: FMCDataManager,
     stateManager: MFD_StateManager,
-    selectPage: (value: string) => void,
 }
-export const FMS_Init = (props: Init_Props) =>
+export const Page = (props: Init_Props) =>
 {   
+    const history = useHistory();
+
     const row1Y: number = 1.5
     const row2Y: number = 9
     const row3Y: number = 16
@@ -60,6 +60,7 @@ export const FMS_Init = (props: Init_Props) =>
     }
     function tryUpdateOrigin(value: string)
     {
+        value = value.toUpperCase();
         setOrigin(value.toUpperCase());
         props.dataManager.GetAirportByIdent(value).then((airport) => {
             if(airport)
@@ -72,6 +73,7 @@ export const FMS_Init = (props: Init_Props) =>
     }
     function trySetDestination(value: string)
     {
+        value = value.toUpperCase();
         setDestination(value.toUpperCase());
         props.dataManager.GetAirportByIdent(value).then((airport) => {
             if(airport)
@@ -84,6 +86,7 @@ export const FMS_Init = (props: Init_Props) =>
     }
     function trySetAlternate(value: string)
     {
+        value = value.toUpperCase();
         setAlternate(value.toUpperCase());
         props.dataManager.GetAirportByIdent(value).then((airport) => {
             if(airport)
@@ -133,7 +136,7 @@ export const FMS_Init = (props: Init_Props) =>
             <Input disabled onChange={(value) => trySetCruiseTemp(value)} characterLimit={4} className="medium-input" posX={64} posY={row5Y} type="text"></Input>
 
             <h2 style={{top: row6Y + "%"}}>MODE</h2>    
-            <Dropdown defaultIndex={0} className="mode-dropdown" innerColor="$grey" offsetX={18.5} offsetY={row6Y} type={DropdownType.system_select} onSelect={(index) => props.dataManager.trySetClimbMode(index)} items={["ECON", "LRC"]}></Dropdown>
+            <Dropdown defaultIndex={0} className="mode-dropdown" innerColor="$grey" offsetX={18.5} offsetY={row6Y} type={DropdownType.system_select} onSelect={(index) => null} items={["ECON", "LRC"]}></Dropdown>
             <h2 style={{top: row6Y + "%", right: "38%"}}>TROPO</h2>    
             <Input onChange={(value) => trySetTropo(value)} characterLimit={5} value={36090} className="less-large-input" posX={64} posY={row6Y} type="text"></Input>
 
@@ -146,9 +149,9 @@ export const FMS_Init = (props: Init_Props) =>
             <Button className="small-button" posX={48} posY={row8Y + 0.3}>WIND</Button>
             
             <div style={{top: "63%"}} className="pagesplitter"></div>
- 
+            
             <Button className="medium-button" posX={18.5} posY={67}>IRS</Button>
-            <Button onClick={() => props.selectPage("ACTIVE/F-PLN/DEPARTURE")} disabled={!props.stateManager.flightPlanManager.getOrigin()} className="medium-button" posX={18.5} posY={75}>DEPARTURE</Button>
+            <Button onClick={() => history.push("/active/f-pln/departure")} disabled={!props.stateManager.flightPlanManager.getOrigin()} className="medium-button" posX={18.5} posY={75}>DEPARTURE</Button>
             <Button className="large-button" posX={48} posY={75}>RTE SUMMARY</Button>
 
             <Button className="medium-button" posX={18.5} posY={83}>NAVAIDS</Button>

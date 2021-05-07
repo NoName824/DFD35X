@@ -1,33 +1,29 @@
 import React, { useEffect, useState } from "react";
-import { Dropdown, DropdownType } from "../../../../Components/dropdown";
+import { Dropdown, DropdownType } from "../../../../../Components/dropdown";
 import './Fpln.scss'
-import { WaypointData } from '../../../../Components/WaypointData'
-import { MFD_StateManager } from "../../../../MFD_StateManager";
-import { FMS_Departure } from "./FMS_Departure";
-import { FMS_Arrival } from "./FMS_Arrival";
-import { FMCDataManager } from "../../../../A35X_FMCDataManager";
-import { Button } from "../../../../Components/button";
+import { WaypointData } from '../../../../../Components/WaypointData'
+import { MFD_StateManager } from "../../../../../MFD_StateManager";
+import { Fpln_Pages } from './Pages/index'
+import { FMCDataManager } from "../../../../../A35X_FMCDataManager";
+import { Button } from "../../../../../Components/button";
 
-import UpArrows from '../../../../Assets/UpScrollArrow.svg'
-import DownArrows from '../../../../Assets/DownScrollArrow.svg'
-import { FMS_Waypoint_Rev } from "./Windows/FMS_Waypoint_Rev";
-import { FMS_New_Dest } from "./Windows/FMS_New_Dest";
-import { FMS_Next_Waypoint } from "./Windows/FMS_Next_Waypoint";
+import UpArrows from '.././../../../../Assets/UpScrollArrow.svg'
+import DownArrows from '.././../../../../Assets/DownScrollArrow.svg'
+import { Fpln_Windows } from "./Windows/index";
+
+import { useRouteMatch, useHistory, Router, Switch, Route } from "react-router-dom";
+import { FplnWindowType } from "./Windows/FplnWindowType";
+
 type Fpln_Props =
 {
     stateManager: MFD_StateManager,
-    page: string,
-    selectPage: (value: string) => void,
 }
-export enum FplnWindowType 
+
+export const Page = (props: Fpln_Props ) =>
 {
-    none,
-    waypointRevisions,
-    nextWaypoint,
-    newDest,  
-}
-export const FMS_Fpln = (props: Fpln_Props ) =>
-{
+    const history = useHistory();
+    let { path, url } = useRouteMatch();
+
     const [scrollPosition, setScrollPosition] = useState(Number);
 
     //REMOVE THIS IF OTHER STATE OBJECTS APPEAR
@@ -118,7 +114,6 @@ export const FMS_Fpln = (props: Fpln_Props ) =>
     }
     function openRevisionMenu(waypointName: string)
     {
-        console.log("Opened Waypoint Rev Menu for waypoint: " + waypointName);      
         setCurrentWindow(FplnWindowType.waypointRevisions);
         selectWaypoint(waypointName);
     }
@@ -127,38 +122,38 @@ export const FMS_Fpln = (props: Fpln_Props ) =>
         switch(currentWindow)
         {
             case(FplnWindowType.newDest):
-                return(<FMS_New_Dest/>);
+                return(<Fpln_Windows.NewDest/>);
             case(FplnWindowType.nextWaypoint):
-                return(<FMS_Next_Waypoint selectedWaypoint={selectedWaypoint}/>);
+                return(<Fpln_Windows.NextWaypoint selectedWaypoint={selectedWaypoint}/>);
             case(FplnWindowType.waypointRevisions):
-                return(<FMS_Waypoint_Rev waypointName={selectedWaypoint} deleteWaypoint={console.log("Delete Waypoint " + selectedWaypoint)} selectWindow={(window: FplnWindowType) => setCurrentWindow(window)} selectPage={(page: string) => props.selectPage(page)}/>);
+                return(<Fpln_Windows.WaypointRevision stateManager={props.stateManager} waypointName={selectedWaypoint} deleteWaypoint={() => console.log("Delete Waypoint " + selectedWaypoint)} selectWindow={(window: FplnWindowType) => {selectWaypoint(''); setCurrentWindow(window)}}/>);
         }   
         return('');
     }
-    switch(props.page)
-    {
-        case("DEPARTURE"):
-            return(<FMS_Departure stateManager={props.stateManager}/>);
-        case("ARRIVAl"):
-            return(<FMS_Arrival stateManager={props.stateManager}/>);
-    }
     return(
-        <div className="fms-page">
-            <div className="fpln-header">
-                <h3 style={{left: "2px", top: "4px"}}>FROM</h3>
-                <h3 style={{left: "25%", top: "4px"}}>UTC</h3>
-                <Dropdown offsetX={40} offsetY={0.25} width={"33%"} height={'4.7%'} onSelect={() => null} defaultIndex={0} items={["SPD        ALT    ", "EFOB   T.WIND"]} type={DropdownType.general}/>
-                <h3  style={{left: "75%", top: "4px"}}>TRK DIST FPA</h3>
-            </div>          
-            <div className="fpln-body">
-                {getWaypoints()}
-                {getWindow()}
-            </div>
-            <div style={{height: "10%"}} className="fpln-body">
-                <Button posY={87} height="40px" width="100px" onClick={() => props.selectPage("ACTIVE/F-PLN/ARRIVAl")}>{props.stateManager.destination}</Button>
-                <Button posY={87} posX={72} height="50px" width="50px" onClick={() => scroll(true)}><img className="scroll-arrow" src={DownArrows} alt=""/></Button>
-                <Button posY={87} posX={80} height="50px" width="50px" onClick={() => scroll(false)}><img className="scroll-arrow" src={UpArrows} alt=""/></Button>
-            </div>
-        </div>
+        <Switch>
+            <Route exact path={path}>
+                {/* Default F-PLN Page */}
+                <div className="fms-page">
+                    <div className="fpln-header">
+                        <h3 style={{left: "2px", top: "4px"}}>FROM</h3>
+                        <h3 style={{left: "25%", top: "4px"}}>UTC</h3>
+                        <Dropdown offsetX={40} offsetY={0.25} width={"33%"} height={'4.7%'} onSelect={() => null} defaultIndex={0} items={["SPD        ALT    ", "EFOB   T.WIND"]} type={DropdownType.general}/>
+                        <h3  style={{left: "75%", top: "4px"}}>TRK DIST FPA</h3>
+                    </div>          
+                    <div className="fpln-body">
+                        {getWaypoints()}
+                        {getWindow()}
+                    </div>
+                    <div style={{height: "10%"}} className="fpln-body">
+                        <Button posY={87} height="40px" width="100px" onClick={() => history.push("/active/f-pln/arrival")}>{props.stateManager.destination}</Button>
+                        <Button posY={87} posX={72} height="50px" width="50px" onClick={() => scroll(true)}><img className="scroll-arrow" src={DownArrows} alt=""/></Button>
+                        <Button posY={87} posX={80} height="50px" width="50px" onClick={() => scroll(false)}><img className="scroll-arrow" src={UpArrows} alt=""/></Button>
+                    </div>
+                </div>     
+            </Route>   
+            <Route path={`${path}/arrival`} component={() => <Fpln_Pages.Arrival stateManager={props.stateManager}/>}/>
+            <Route path={`${path}/departure`} component={() => <Fpln_Pages.Departure stateManager={props.stateManager}/>}/>
+        </Switch>
     );
 }

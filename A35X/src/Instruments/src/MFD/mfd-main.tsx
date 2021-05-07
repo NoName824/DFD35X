@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import './mfd-main-style.scss'
 import { Dropdown, DropdownType } from './Components/dropdown'
 import { FMS_Sys } from './Systems/FMS/FMS_Sys'
@@ -11,6 +11,7 @@ import {FlightPlanManager} from "../flightplanning/FlightPlanManager"
 import { render } from '../Hooks/index'
 import { FMCDataManager } from './A35X_FMCDataManager'
 import { MFD_StateManager } from './MFD_StateManager'
+import { HashRouter as Router } from 'react-router-dom';
 
 
 type Body_Props = {
@@ -55,12 +56,14 @@ export const MFD_Body = (props: Body_Props) =>
     {
         setFlightNum(props.stateManager.flightNumber);
     }
-    return( 
-        <div id={props.side} className="mfd-body">   
-            <Dropdown defaultIndex={0} type={DropdownType.system_select} onSelect={(index) => setPage(index)} items={[("FMS" + (props.side === "left" ? "1" : "2")), "ATC COM", "SURV", "C/L MENU", "FCU BKUP"]}></Dropdown>
-            <span id="flight-num">{props.stateManager.flightNumber}</span>
-            {currentPage()}
-        </div>
+    return(                 
+        <Router>
+            <div id={props.side} className="mfd-body">   
+                <Dropdown defaultIndex={0} type={DropdownType.system_select} onSelect={(index) => setPage(index)} items={[("FMS" + (props.side === "left" ? "1" : "2")), "ATC COM", "SURV", "C/L MENU", "FCU BKUP"]}></Dropdown>
+                <span id="flight-num">{props.stateManager.flightNumber}</span>
+                {currentPage()}
+            </div>
+        </Router>
     );
 }
 export const MFD_Screen = () => {
@@ -82,3 +85,4 @@ export const MFD_Screen = () => {
     )
 }
 render(<MFD_Screen />)
+
