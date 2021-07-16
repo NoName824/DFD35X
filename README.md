@@ -13,7 +13,7 @@ Since the A35X is not released, **we do not provide support for the aircraft's i
 4. On the development bar at the top of your MSFS window, Click [Dev Mode] > Open Project. Select A35X > dfd35x-k.xml 
 5. Right click on the A35X Folder and click "Git Bash Here" and Run the commands npm i, npm i --force, and npm run build. This generates the display files from src. (You must have npm/node.js installed)
 6. In the development bar at the top of MSFS, Open Tools > Project Editor, and click build all.
-7. Once the build is complete, the DFD35X will appear in your available Aircraft Lis
+7. Once the build is complete, the DFD35X will appear in your available Aircraft List.
 
 ## FAQ
 **1. When will the DFD35X project be released as Version 1.0?**  
